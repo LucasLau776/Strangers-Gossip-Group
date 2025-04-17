@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post - MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 100px 20px 60px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .post-content, .comments-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .post-content, body.dark-mode .comments-section {
+      background-color: #1e1e1e;
+    }
+
+    .action-btns button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .like-btn, .flag-btn {
+      background-color: #377FC6;
+      color: white;
+    }
+
+    .report-btn {
+      background-color: crimson;
+      color: white;
+    }
+
+    .comment {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+
+    .comment small {
+      color: #888;
+    }
+
+    .comment-actions {
+      margin-top: 5px;
+    }
+
+    .comment-actions button {
+      margin-right: 8px;
+      background-color: #e0e0e0;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    body.dark-mode .comment-actions button {
+      background-color: #555;
+      color: white;
+    }
+
+    .reply-input {
+      margin-top: 10px;
+    }
+
+    .reply-input textarea {
+      width: 100%;
+      height: 60px;
+      padding: 6px;
+      border-radius: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .reply-input textarea {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .reply-input button {
+      margin-top: 5px;
+      background-color: #377FC6;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .reply-input.hidden {
+      display: none;
+    }
+
+    .new-comment textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .new-comment textarea {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .new-comment button {
+      margin-top: 8px;
+      background-color: #377FC6;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #flagFloatBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div class="top-nav">
+  <div class="logo">
+    <a href="index.html">MMU Strangers Gossip</a>
+  </div>
+  <div class="search-container">
+    <input type="text" placeholder="Search...">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="trending.html">Trending</a>
+    <a href="post.html">Post</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="post-content">
+    <h2>Who’s that FOM guy walking with the mystery girl?</h2>
+    <p>Saw them holding hands near HB3 last night 👀 anyone knows who she is?</p>
+    <small>Posted 3 hours ago</small>
+    <div class="action-btns">
+      <button class="like-btn" id="likeBtn">👍 Like (<span id="likeCount">56</span>)</button>
+      <button class="flag-btn" id="flagToggleBtn">🚩 Flag</button>
+      <button class="report-btn" onclick="location.href='report.html'">Report</button>
+    </div>
+  </div>
+
+  <div class="comments-section">
+    <h3>Comments</h3>
+
+    <div class="comment" data-id="comment1">
+      <p>Probably his cousin la 🤣</p>
+      <small>by Anonymous · 1 hour ago</small>
+      <div class="comment-actions">
+        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">12</span>)</button>
+        <button onclick="location.href='report_comment.html'">Report</button>
+        <button class="reply-toggle-btn">Reply</button>
+        <div class="reply-input hidden">
+          <textarea placeholder="Type your reply..."></textarea>
+          <button>Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comment" data-id="comment2">
+      <p>I saw them too... they looked *too close* to be cousins 💅</p>
+      <small>by Anonymous · 45 mins ago</small>
+      <div class="comment-actions">
+        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">19</span>)</button>
+        <button onclick="location.href='report_comment.html'">Report</button>
+        <button class="reply-toggle-btn">Reply</button>
+        <div class="reply-input hidden">
+          <textarea placeholder="Type your reply..."></textarea>
+          <button>Send</button>
+        </div>
+      </div>
+    </div>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #ccc;">
+    <div class="new-comment">
+      <h4>Leave a Comment</h4>
+      <textarea id="newCommentText" rows="3" placeholder="Write your comment here..."></textarea>
+      <br>
+      <button onclick="addComment()">Post Comment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Buttons -->
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
+<button class="floating-btn" id="flagFloatBtn" onclick="location.href='flagged_post.html'">🚩</button>
+
+<footer>
+  <p>© 2025 MMU Strangers Gossip</p>
+</footer>
+
+<script>
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  });
+
+  // Post like
+  const likeBtn = document.getElementById("likeBtn");
+  const likeCount = document.getElementById("likeCount");
+  let liked = localStorage.getItem("liked-post") === "true";
+  if (liked) likeBtn.textContent = `👎 Unlike (${likeCount.textContent})`;
+
+  likeBtn.addEventListener("click", () => {
+    let count = parseInt(likeCount.textContent);
+    liked = !liked;
+    localStorage.setItem("liked-post", liked);
+    likeCount.textContent = liked ? count + 1 : count - 1;
+    likeBtn.textContent = liked
+      ? `👎 Unlike (${likeCount.textContent})`
+      : `👍 Like (${likeCount.textContent})`;
+  });
+
+  // Flag toggle
+  const flagBtn = document.getElementById("flagToggleBtn");
+  let flagged = localStorage.getItem("flagged-post") === "true";
+  flagBtn.textContent = flagged ? "🚩 Unflag" : "🚩 Flag";
+  flagBtn.addEventListener("click", () => {
+    flagged = !flagged;
+    localStorage.setItem("flagged-post", flagged.toString());
+    flagBtn.textContent = flagged ? "🚩 Unflag" : "🚩 Flag";
+  });
+
+  // Comment like
+  document.querySelectorAll(".comment").forEach(comment => {
+    const btn = comment.querySelector(".like-comment-btn");
+    const countSpan = comment.querySelector(".comment-like-count");
+    const commentId = comment.getAttribute("data-id");
+    let liked = localStorage.getItem(`liked-${commentId}`) === "true";
+
+    if (liked) {
+      btn.textContent = `👎 Unlike (${countSpan.textContent})`;
+    }
+
+    btn.addEventListener("click", () => {
+      let count = parseInt(countSpan.textContent);
+      liked = !liked;
+      localStorage.setItem(`liked-${commentId}`, liked);
+      countSpan.textContent = liked ? count + 1 : count - 1;
+      btn.textContent = liked
+        ? `👎 Unlike (${countSpan.textContent})`
+        : `👍 Like (${countSpan.textContent})`;
+    });
+
+    // Reply toggle
+    const replyToggle = comment.querySelector('.reply-toggle-btn');
+    const replyBox = comment.querySelector('.reply-input');
+    replyToggle.addEventListener('click', () => {
+      replyBox.classList.toggle('hidden');
+    });
+  });
+
+  // Add comment
+  function addComment() {
+    const text = document.getElementById("newCommentText").value.trim();
+    if (!text) return;
+
+    const commentsSection = document.querySelector(".comments-section");
+    const newDiv = document.createElement("div");
+    const commentId = `new-${Date.now()}`;
+    newDiv.className = "comment";
+    newDiv.setAttribute("data-id", commentId);
+    newDiv.innerHTML = `
+      <p>${text}</p>
+      <small>by You · just now</small>
+      <div class="comment-actions">
+        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">0</span>)</button>
+        <button onclick="location.href='report_comment.html'">Report</button>
+        <button class="reply-toggle-btn">Reply</button>
+        <div class="reply-input hidden">
+          <textarea placeholder="Type your reply..."></textarea>
+          <button>Send</button>
+        </div>
+      </div>
+    `;
+    const commentForm = document.querySelector(".new-comment");
+    commentsSection.insertBefore(newDiv, commentForm);
+    document.getElementById("newCommentText").value = "";
+
+    // Enable like toggle for new comment
+    const likeBtn = newDiv.querySelector(".like-comment-btn");
+    const countSpan = newDiv.querySelector(".comment-like-count");
+    let liked = false;
+
+    likeBtn.addEventListener("click", () => {
+      let count = parseInt(countSpan.textContent);
+      liked = !liked;
+      countSpan.textContent = liked ? count + 1 : count - 1;
+      likeBtn.textContent = liked
+        ? `👎 Unlike (${countSpan.textContent})`
+        : `👍 Like (${countSpan.textContent})`;
+    });
+
+    // Reply toggle
+    newDiv.querySelector('.reply-toggle-btn').addEventListener('click', () => {
+      newDiv.querySelector('.reply-input').classList.toggle('hidden');
+    });
+  }
+</script>
+
+</body>
+</html>
