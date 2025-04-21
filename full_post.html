@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Post - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N2bWqZT+z59Rz1lg8/hLv3XjzOmZzGL7K5EJhKJmFSy+dZJWmVkf2dBZmYFfMRzjocQZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -98,7 +99,7 @@
       cursor: pointer;
     }
 
-    .like-btn, .flag-btn {
+    .like-btn, .save-btn {
       background-color: #377FC6;
       color: white;
     }
@@ -218,7 +219,7 @@
       color: white;
     }
 
-    #flagFloatBtn {
+    #bookmarkFloatBtn {
       bottom: 20px;
       left: 20px;
       background-color: #50eabc;
@@ -267,40 +268,22 @@
     <p>Saw them holding hands near HB3 last night 👀 anyone knows who she is?</p>
     <small>Posted 3 hours ago</small>
     <div class="action-btns">
-      <button class="like-btn" id="likeBtn">👍 Like (<span id="likeCount">56</span>)</button>
-      <button class="flag-btn" id="flagToggleBtn">🚩 Flag</button>
-      <button class="report-btn" onclick="location.href='report.html'">Report</button>
+      <button class="like-btn" id="likeBtn"><i class="fas fa-thumbs-up"></i> Like (<span id="likeCount">56</span>)</button>
+      <button class="save-btn" id="savePostBtn"><i class="fas fa-bookmark"></i> Save</button>
+      <button class="report-btn" onclick="location.href='report.html'"><i class="fas fa-flag"></i> Report</button>
     </div>
   </div>
 
   <div class="comments-section">
     <h3>Comments</h3>
-
-    <div class="comment" data-id="comment1">
-      <p>Probably his cousin la 🤣</p>
-      <small>by Anonymous · 1 hour ago</small>
+    <div class="comment">
+      <p><strong>Anonymous:</strong> I saw them too! They looked really cute 😍</p>
       <div class="comment-actions">
-        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">12</span>)</button>
-        <button onclick="location.href='report_comment.html'">Report</button>
-        <button class="reply-toggle-btn">Reply</button>
-        <div class="reply-input hidden">
-          <textarea placeholder="Type your reply..."></textarea>
-          <button>Send</button>
-        </div>
+        <button onclick="toggleReply(this)">Reply</button>
       </div>
-    </div>
-
-    <div class="comment" data-id="comment2">
-      <p>I saw them too... they looked *too close* to be cousins 💅</p>
-      <small>by Anonymous · 45 mins ago</small>
-      <div class="comment-actions">
-        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">19</span>)</button>
-        <button onclick="location.href='report_comment.html'">Report</button>
-        <button class="reply-toggle-btn">Reply</button>
-        <div class="reply-input hidden">
-          <textarea placeholder="Type your reply..."></textarea>
-          <button>Send</button>
-        </div>
+      <div class="reply-input hidden">
+        <textarea placeholder="Write your reply..."></textarea>
+        <button onclick="postReply(this)">Post Reply</button>
       </div>
     </div>
 
@@ -317,120 +300,62 @@
 <!-- Floating Buttons -->
 <button class="floating-btn" id="themeToggle">🌙</button>
 <button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
-<button class="floating-btn" id="flagFloatBtn" onclick="location.href='flagged_post.html'">🚩</button>
+<button class="floating-btn" id="bookmarkFloatBtn" onclick="location.href='bookmark.html'">📑</button>
 
 <footer>
   <p>© 2025 MMU Strangers Gossip</p>
 </footer>
 
 <script>
-  // Theme toggle
   const themeBtn = document.getElementById('themeToggle');
   themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
   });
 
-  // Post like
   const likeBtn = document.getElementById("likeBtn");
   const likeCount = document.getElementById("likeCount");
   let liked = localStorage.getItem("liked-post") === "true";
-  if (liked) likeBtn.textContent = `👎 Unlike (${likeCount.textContent})`;
-
+  if (liked) likeBtn.innerHTML = `👎 Unlike (<span id="likeCount">${likeCount.textContent}</span>)`;
   likeBtn.addEventListener("click", () => {
     let count = parseInt(likeCount.textContent);
     liked = !liked;
     localStorage.setItem("liked-post", liked);
     likeCount.textContent = liked ? count + 1 : count - 1;
-    likeBtn.textContent = liked
-      ? `👎 Unlike (${likeCount.textContent})`
-      : `👍 Like (${likeCount.textContent})`;
+    likeBtn.innerHTML = liked
+      ? `👎 Unlike (<span id="likeCount">${likeCount.textContent}</span>)`
+      : `👍 Like (<span id="likeCount">${likeCount.textContent}</span>)`;
   });
 
-  // Flag toggle
-  const flagBtn = document.getElementById("flagToggleBtn");
-  let flagged = localStorage.getItem("flagged-post") === "true";
-  flagBtn.textContent = flagged ? "🚩 Unflag" : "🚩 Flag";
-  flagBtn.addEventListener("click", () => {
-    flagged = !flagged;
-    localStorage.setItem("flagged-post", flagged.toString());
-    flagBtn.textContent = flagged ? "🚩 Unflag" : "🚩 Flag";
+  const saveBtn = document.getElementById("savePostBtn");
+  let saved = localStorage.getItem("saved-post") === "true";
+  saveBtn.innerHTML = saved ? "📌 Unsave" : "📌 Save";
+  saveBtn.addEventListener("click", () => {
+    saved = !saved;
+    localStorage.setItem("saved-post", saved.toString());
+    saveBtn.innerHTML = saved ? "📌 Unsave" : "📌 Save";
   });
 
-  // Comment like
-  document.querySelectorAll(".comment").forEach(comment => {
-    const btn = comment.querySelector(".like-comment-btn");
-    const countSpan = comment.querySelector(".comment-like-count");
-    const commentId = comment.getAttribute("data-id");
-    let liked = localStorage.getItem(`liked-${commentId}`) === "true";
+  function toggleReply(btn) {
+    const replyBox = btn.closest(".comment").querySelector(".reply-input");
+    replyBox.classList.toggle("hidden");
+  }
 
-    if (liked) {
-      btn.textContent = `👎 Unlike (${countSpan.textContent})`;
+  function postReply(btn) {
+    const text = btn.previousElementSibling.value;
+    if (text.trim()) {
+      alert("Reply posted: " + text);
+      btn.previousElementSibling.value = "";
+      btn.closest(".reply-input").classList.add("hidden");
     }
+  }
 
-    btn.addEventListener("click", () => {
-      let count = parseInt(countSpan.textContent);
-      liked = !liked;
-      localStorage.setItem(`liked-${commentId}`, liked);
-      countSpan.textContent = liked ? count + 1 : count - 1;
-      btn.textContent = liked
-        ? `👎 Unlike (${countSpan.textContent})`
-        : `👍 Like (${countSpan.textContent})`;
-    });
-
-    // Reply toggle
-    const replyToggle = comment.querySelector('.reply-toggle-btn');
-    const replyBox = comment.querySelector('.reply-input');
-    replyToggle.addEventListener('click', () => {
-      replyBox.classList.toggle('hidden');
-    });
-  });
-
-  // Add comment
   function addComment() {
-    const text = document.getElementById("newCommentText").value.trim();
-    if (!text) return;
-
-    const commentsSection = document.querySelector(".comments-section");
-    const newDiv = document.createElement("div");
-    const commentId = `new-${Date.now()}`;
-    newDiv.className = "comment";
-    newDiv.setAttribute("data-id", commentId);
-    newDiv.innerHTML = `
-      <p>${text}</p>
-      <small>by You · just now</small>
-      <div class="comment-actions">
-        <button class="like-comment-btn">👍 Like (<span class="comment-like-count">0</span>)</button>
-        <button onclick="location.href='report_comment.html'">Report</button>
-        <button class="reply-toggle-btn">Reply</button>
-        <div class="reply-input hidden">
-          <textarea placeholder="Type your reply..."></textarea>
-          <button>Send</button>
-        </div>
-      </div>
-    `;
-    const commentForm = document.querySelector(".new-comment");
-    commentsSection.insertBefore(newDiv, commentForm);
-    document.getElementById("newCommentText").value = "";
-
-    // Enable like toggle for new comment
-    const likeBtn = newDiv.querySelector(".like-comment-btn");
-    const countSpan = newDiv.querySelector(".comment-like-count");
-    let liked = false;
-
-    likeBtn.addEventListener("click", () => {
-      let count = parseInt(countSpan.textContent);
-      liked = !liked;
-      countSpan.textContent = liked ? count + 1 : count - 1;
-      likeBtn.textContent = liked
-        ? `👎 Unlike (${countSpan.textContent})`
-        : `👍 Like (${countSpan.textContent})`;
-    });
-
-    // Reply toggle
-    newDiv.querySelector('.reply-toggle-btn').addEventListener('click', () => {
-      newDiv.querySelector('.reply-input').classList.toggle('hidden');
-    });
+    const textarea = document.getElementById("newCommentText");
+    if (textarea.value.trim()) {
+      alert("Comment added: " + textarea.value);
+      textarea.value = "";
+    }
   }
 </script>
 
