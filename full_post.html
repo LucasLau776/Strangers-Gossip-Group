@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Post - MMU Strangers Gossip</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N2bWqZT+z59Rz1lg8/hLv3XjzOmZzGL7K5EJhKJmFSy+dZJWmVkf2dBZmYFfMRzjocQZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,12 +13,10 @@
       padding: 0;
       transition: background-color 0.3s, color 0.3s;
     }
-
     body.dark-mode {
       background-color: #121212;
       color: #f0f0f0;
     }
-
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -32,19 +30,16 @@
       box-sizing: border-box;
       flex-wrap: wrap;
     }
-
     .logo a {
       color: white;
       text-decoration: none;
       font-size: 1.5rem;
       font-weight: bold;
     }
-
     .search-container {
       flex-grow: 1;
       margin: 10px;
     }
-
     .search-container input {
       width: 100%;
       padding: 8px;
@@ -54,31 +49,26 @@
       background-color: white;
       color: black;
     }
-
     body.dark-mode .search-container input {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
-
     .nav-links {
       display: flex;
       align-items: center;
     }
-
     .nav-links a {
       color: white;
       text-decoration: none;
       margin: 0 10px;
       font-size: 1rem;
     }
-
     .container {
       padding: 100px 20px 60px;
       max-width: 800px;
       margin: auto;
     }
-
     .post-content, .comments-section {
       background: white;
       padding: 20px;
@@ -86,11 +76,9 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
-
     body.dark-mode .post-content, body.dark-mode .comments-section {
       background-color: #1e1e1e;
     }
-
     .action-btns button {
       margin-right: 10px;
       padding: 8px 16px;
@@ -98,30 +86,24 @@
       border: none;
       cursor: pointer;
     }
-
     .like-btn, .save-btn {
       background-color: #377FC6;
       color: white;
     }
-
     .report-btn {
       background-color: crimson;
       color: white;
     }
-
     .comment {
       border-bottom: 1px solid #eee;
       padding: 10px 0;
     }
-
     .comment small {
       color: #888;
     }
-
     .comment-actions {
       margin-top: 5px;
     }
-
     .comment-actions button {
       margin-right: 8px;
       background-color: #e0e0e0;
@@ -130,16 +112,13 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
     body.dark-mode .comment-actions button {
       background-color: #555;
       color: white;
     }
-
     .reply-input {
       margin-top: 10px;
     }
-
     .reply-input textarea {
       width: 98%;
       height: 60px;
@@ -150,13 +129,11 @@
       background-color: white;
       color: black;
     }
-
     body.dark-mode .reply-input textarea {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
-
     .reply-input button {
       margin-top: 5px;
       background-color: #377FC6;
@@ -166,11 +143,9 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
     .reply-input.hidden {
       display: none;
     }
-
     .new-comment textarea {
       width: 98%;
       padding: 10px;
@@ -180,13 +155,11 @@
       background-color: white;
       color: black;
     }
-
     body.dark-mode .new-comment textarea {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
-
     .new-comment button {
       margin-top: 8px;
       background-color: #377FC6;
@@ -196,7 +169,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     .floating-btn {
       position: fixed;
       width: 50px;
@@ -211,28 +183,24 @@
       transition: all 0.3s ease;
       border: none;
     }
-
     #themeToggle {
       bottom: 20px;
       right: 20px;
       background-color: #555;
       color: white;
     }
-
     #bookmarkFloatBtn {
       bottom: 20px;
       left: 20px;
       background-color: #50eabc;
       color: white;
     }
-
     #notifBtn {
       bottom: 80px;
       left: 20px;
       background-color: #45f1f4;
       color: white;
     }
-
     footer {
       background-color: #377FC6;
       color: white;
@@ -279,7 +247,9 @@
     <div class="comment">
       <p><strong>Anonymous:</strong> I saw them too! They looked really cute 😍</p>
       <div class="comment-actions">
+        <button onclick="likeComment(this)" data-liked="false">👍 Like (<span>0</span>)</button>
         <button onclick="toggleReply(this)">Reply</button>
+        <button onclick="location.href='report_comment.html'">Report</button>
       </div>
       <div class="reply-input hidden">
         <textarea placeholder="Write your reply..."></textarea>
@@ -355,6 +325,20 @@
     if (textarea.value.trim()) {
       alert("Comment added: " + textarea.value);
       textarea.value = "";
+    }
+  }
+
+  function likeComment(button) {
+    const span = button.querySelector("span");
+    let count = parseInt(span.textContent);
+    if (button.dataset.liked === "true") {
+      span.textContent = count - 1;
+      button.dataset.liked = "false";
+      button.innerHTML = `👍 Like (<span>${span.textContent}</span>)`;
+    } else {
+      span.textContent = count + 1;
+      button.dataset.liked = "true";
+      button.innerHTML = `✅ Liked (<span>${span.textContent}</span>)`;
     }
   }
 </script>
