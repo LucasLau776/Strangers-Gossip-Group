@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trending - MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 2px solid #ccc;
+      background-color: #fff;
+      color: #333;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #333;
+      color: #f0f0f0;
+      border: 2px solid #555;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Main Content */
+    .content {
+      padding: 100px 20px 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .post {
+      background-color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.2s;
+    }
+
+    .post:hover {
+      background-color: #e9f1fd;
+    }
+
+    body.dark-mode .post {
+      background-color: #1e1e1e;
+    }
+
+    body.dark-mode .post:hover {
+      background-color: #2c2c2c;
+    }
+
+    .post-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Floating Buttons */
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="logo">
+      <a href="index.html">MMU Strangers Gossip</a>
+    </div>
+    <div class="search-container">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="trending.html">Trending</a>
+      <a href="post.html">Post</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>Trending Confessions</h1>
+
+    <div class="post">
+      <a href="full_post.html" class="post-link">
+        <h3>Confession #1</h3>
+        <p>I once took a nap during my exam and still passed with flying colors.</p>
+      </a>
+    </div>
+
+    <div class="post">
+      <a href="full_post.html" class="post-link">
+        <h3>Confession #2</h3>
+        <p>Someone anonymously paid for my meal in the cafeteria... still wondering who it was 😭</p>
+      </a>
+    </div>
+
+    <div class="post">
+      <a href="full_post.html" class="post-link">
+        <h3>Confession #3</h3>
+        <p>I accidentally sent a love letter to the wrong person and now we’re dating 🫣</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- Floating Buttons -->
+  <button class="floating-btn" id="themeToggle">🌙</button>
+  <button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
+  <button class="floating-btn" id="bookmarkBtn" onclick="location.href='bookmark.html'">📑</button>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 MMU Strangers Gossip</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+  </script>
+
+</body>
+</html>
