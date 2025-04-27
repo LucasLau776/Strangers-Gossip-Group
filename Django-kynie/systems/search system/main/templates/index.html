@@ -1,0 +1,31 @@
+<!-- main/templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+    <h1>Search Posts</h1>
+    
+    <form method="GET" action="">
+        <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if query %}
+        <h3>Results for "{{ query }}"</h3>
+        {% if results %}
+            <ul>
+            {% for post in results %}
+                <li>
+                    <h4>{{ post.title }}</h4>
+                    <p>{{ post.content }}</p>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts found.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
