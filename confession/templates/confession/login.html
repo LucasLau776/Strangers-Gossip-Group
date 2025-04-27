@@ -200,15 +200,17 @@
     <div class="logo">
       <a href="index.html">MMU Strangers Gossip</a>
     </div>
-    <div class="search-container">
-      <input type="text" placeholder="Search...">
-    </div>
+    
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+    
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="trending.html">Trending</a>
-      <a href="post.html">Post</a>
-      <a href="login.html">Login</a>
-      <a href="register.html">Register</a>
+      <a href="{% url 'index' %}">Home</a>
+      <a href="#">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
     </div>
   </div>
 

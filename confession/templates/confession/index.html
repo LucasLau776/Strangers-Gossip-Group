@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Page Content */
+    .content {
+      padding: 100px 20px 40px;
+      text-align: center;
+    }
+
+    .content h1 {
+      font-size: 2rem;
+    }
+
+    /* Post Card */
+    .post-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 600px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: black;
+      display: block;
+    }
+
+    .post-card:hover {
+      transform: scale(1.02);
+      background-color: #f9f9f9;
+    }
+
+    .post-card h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">MMU Strangers Gossip</a>
+    </div>
+    
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+    
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>Welcome to MMU Strangers Gossip</h1>
+    <p>Your go-to place for all the latest gossip around MMU!</p>
+
+    <!-- Real Confessions -->
+    {% for confession in confessions %}
+      <a href="{% url 'full_post' confession.id %}" class="post-card">
+        <h3>{{ confession.content|truncatechars:50 }}</h3>
+        <p>Posted by {{ confession.user }} at {{ confession.timestamp|date:"Y-m-d H:i" }}</p>
+      </a>
+    {% empty %}
+      <p>No posts yet. Be the first to confess!</p>
+    {% endfor %}
+  </div>
+
+  <footer>
+    <p>© 2025 MMU Strangers Gossip</p>
+  </footer>
+
+</body>
+</html>
