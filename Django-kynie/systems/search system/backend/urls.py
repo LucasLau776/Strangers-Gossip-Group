@@ -5,8 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),  # Main app URLs
-    # Removed all auth/password reset routes
+    path('', include('main.urls')),
 ]
 
 if settings.DEBUG:

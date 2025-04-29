@@ -1,20 +1,20 @@
-<!-- search.html -->
-{% extends "base.html" %}
+{% extends 'main/base.html' %}
 
 {% block content %}
-  <div class="search-container">
-    <form method="get" action="{% url 'search' %}">
-      <input type="text" name="q" value="{{ query }}" placeholder="Search for posts...">
-      <button type="submit">Search</button>
-    </form>
+<h1>Search Posts</h1>
+
+<form method="GET" action="{% url 'search' %}">
+    <input type="text" name="q" placeholder="Search..." required>
+    <button type="submit">Search</button>
+</form>
+
+{% if results %}
     <ul>
-      {% if results %}
         {% for post in results %}
-          <li><a href="{% url 'full_post' post.id %}">{{ post.title }}</a></li>
+            <li>{{ post.title }}</li>
         {% endfor %}
-      {% else %}
-        <li>No results found.</li>
-      {% endif %}
     </ul>
-  </div>
+{% elif request.GET.q %}
+    <p>No results found.</p>
+{% endif %}
 {% endblock %}
