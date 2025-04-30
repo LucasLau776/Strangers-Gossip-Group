@@ -1,20 +1,40 @@
 {% extends 'main/base.html' %}
 
+{% block title %}Search - MMU Strangers Gossip{% endblock %}
+
 {% block content %}
-<h1>Search Posts</h1>
+<div class="container">
+  <h2>Search for Posts</h2>
 
-<form method="GET" action="{% url 'search' %}">
-    <input type="text" name="q" placeholder="Search..." required>
+  <!-- Search Form -->
+  <form method="get" action="{% url 'search' %}">
+    <input type="text" name="q" placeholder="Search for posts..." value="{{ request.GET.q }}">
     <button type="submit">Search</button>
-</form>
+  </form>
 
-{% if results %}
-    <ul>
-        {% for post in results %}
-            <li>{{ post.title }}</li>
-        {% endfor %}
-    </ul>
-{% elif request.GET.q %}
+  <!-- Filter Form -->
+  <form method="get" action="{% url 'search' %}">
+    <input type="hidden" name="q" value="{{ request.GET.q }}">
+    <label for="filter">Filter By:</label>
+    <select name="filter" id="filter">
+      <option value="date" {% if request.GET.filter == 'date' %}selected{% endif %}>Date</option>
+      <option value="year" {% if request.GET.filter == 'year' %}selected{% endif %}>Year</option>
+      <option value="popularity" {% if request.GET.filter == 'popularity' %}selected{% endif %}>Popularity</option>
+    </select>
+    <button type="submit">Apply Filter</button>
+  </form>
+
+  <!-- Search Results -->
+  {% if results %}
+    <div class="results">
+      {% for post in results %}
+        <div class="result">
+          <a href="{% url 'full_post' post.id %}">{{ post.title }}</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif request.GET.q %}
     <p>No results found.</p>
-{% endif %}
+  {% endif %}
+</div>
 {% endblock %}
