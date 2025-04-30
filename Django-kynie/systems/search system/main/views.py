@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .models import Post
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils.timezone import now
 
 def index_view(request):
@@ -44,10 +44,9 @@ def bookmark_view(request):
 
 def search_view(request):
     query = request.GET.get('q', '')
-    filter_type = request.GET.get('filter', '')
+    filter_type = request.GET.get('filter', 'date')
     results = Post.objects.all()
 
-    # Apply search
     if query:
         results = results.filter(
             Q(title__icontains=query) |
@@ -58,8 +57,9 @@ def search_view(request):
     if filter_type == 'date':
         results = results.order_by('-created_at')
     elif filter_type == 'year':
-        results = results.filter(created_at__year=now().year)
+        results = results.filter(created_at__year=now().year).order_by('-created_at')
     elif filter_type == 'popularity':
+        # Assume 'likes' is a ManyToManyField or similar
         results = results.annotate(like_count=Count('likes')).order_by('-like_count')
 
     return render(request, 'main/search.html', {
