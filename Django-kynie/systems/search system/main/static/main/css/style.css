@@ -1,4 +1,9 @@
 /* static/css/styles.css */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
 body {
   background-color: #E3F2FD;
   font-family: Arial, sans-serif;
@@ -24,6 +29,29 @@ body {
   border-radius: 20px;
   border: 2px solid #90CAF9;
   width: 300px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.results {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .results {
+  background: #1E1E1E;
 }
 
 .search-container button {

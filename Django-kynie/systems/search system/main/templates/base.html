@@ -1,3 +1,4 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,5 +51,6 @@
       document.getElementById('themeToggle').textContent = '☀️';
     }
   </script>
+  {% block content%}{% endblock%}
 </body>
 </html>

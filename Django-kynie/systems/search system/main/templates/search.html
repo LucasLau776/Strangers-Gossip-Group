@@ -1,40 +1,77 @@
 {% extends 'main/base.html' %}
+{% load static%}
 
 {% block title %}Search - MMU Strangers Gossip{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h2>Search for Posts</h2>
+<style>
+    /* Add all the CSS styles from your mockup here */
+    /* [PASTE THE ENTIRE <style> SECTION FROM YOUR MOCKUP HERE] */
+</style>
 
-  <!-- Search Form -->
-  <form method="get" action="{% url 'search' %}">
-    <input type="text" name="q" placeholder="Search for posts..." value="{{ request.GET.q }}">
-    <button type="submit">Search</button>
-  </form>
-
-  <!-- Filter Form -->
-  <form method="get" action="{% url 'search' %}">
-    <input type="hidden" name="q" value="{{ request.GET.q }}">
-    <label for="filter">Filter By:</label>
-    <select name="filter" id="filter">
-      <option value="date" {% if request.GET.filter == 'date' %}selected{% endif %}>Date</option>
-      <option value="year" {% if request.GET.filter == 'year' %}selected{% endif %}>Year</option>
-      <option value="popularity" {% if request.GET.filter == 'popularity' %}selected{% endif %}>Popularity</option>
-    </select>
-    <button type="submit">Apply Filter</button>
-  </form>
-
-  <!-- Search Results -->
-  {% if results %}
-    <div class="results">
-      {% for post in results %}
-        <div class="result">
-          <a href="{% url 'full_post' post.id %}">{{ post.title }}</a>
-        </div>
-      {% endfor %}
+<div class="top-nav">
+    <div class="logo">
+        <a href="{% url 'home' %}">MMU Strangers Gossip</a>
     </div>
-  {% elif request.GET.q %}
-    <p>No results found.</p>
-  {% endif %}
+    <div class="search-container">
+        <form method="get" action="{% url 'search' %}">
+            <input type="text" name="q" placeholder="Search..." value="{{ request.GET.q }}">
+        </form>
+    </div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'trending' %}">Trending</a>
+        <a href="{% url 'post' %}">Post</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
 </div>
+
+<div class="container">
+    <h2>Search for Posts</h2>
+
+    <!-- Combined Search and Filter Form -->
+    <form method="get" action="{% url 'search' %}">
+        <div class="search-filter-container">
+            <input type="text" name="q" placeholder="Search for posts..." value="{{ request.GET.q }}">
+            <select name="filter" id="filter">
+                <option value="date" {% if request.GET.filter == 'date' %}selected{% endif %}>Date</option>
+                <option value="year" {% if request.GET.filter == 'year' %}selected{% endif %}>Year</option>
+                <option value="popularity" {% if request.GET.filter == 'popularity' %}selected{% endif %}>Popularity</option>
+            </select>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <!-- Search Results -->
+    {% if results %}
+    <div class="results">
+        {% for post in results %}
+        <div class="result">
+            <a href="{% url 'full_post' post.id %}">{{ post.title }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif request.GET.q %}
+    <p>No results found.</p>
+    {% endif %}
+</div>
+
+<!-- Floating Buttons -->
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'notifications' %}'">🔔</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmarks' %}'">📑</button>
+
+<footer>
+    <p>© 2025 MMU Strangers Gossip</p>
+</footer>
+
+<script>
+    // Add the JavaScript from your mockup here
+    // [PASTE THE ENTIRE <script> SECTION FROM YOUR MOCKUP HERE]
+</script>
 {% endblock %}

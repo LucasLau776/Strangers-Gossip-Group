@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout
 from .models import Post
 from django.db.models import Q
 from django.utils.timezone import now
@@ -57,15 +58,14 @@ def search_view(request):
     if filter_type == 'date':
         results = results.order_by('-created_at')
     elif filter_type == 'year':
-        current_year = now().year
-        results = results.filter(created_at__year=current_year).order_by('-created_at')
+        results = results.filter(created_at__year=now().year)
     elif filter_type == 'popularity':
-        # You don’t have a popularity field, so fallback to created date
-        results = results.order_by('-created_at')
+        results = results.annotate(like_count=Count('likes')).order_by('-like_count')
 
-    return render(request, 'search.html', {
+    return render(request, 'main/search.html', {
         'results': results,
-        'query': query
+        'query': query,
+        'filter': filter_type
     })
 
 def full_post_view(request, post_id):
