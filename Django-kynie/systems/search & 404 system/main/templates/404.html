@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}404 Not Found{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center;">
+  <h1 style="font-size: 4rem;">404 😵</h1>
+  <p style="font-size: 1.2rem;">Oops! Page not found.</p>
+  <a href="{% url 'index' %}" style="margin-top: 20px; padding: 10px 20px; background-color: #444; color: white; text-decoration: none; border-radius: 8px;">
+    Go Back to Home
+  </a>
+</div>
+{% endblock %}

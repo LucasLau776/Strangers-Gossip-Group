@@ -77,3 +77,6 @@ def full_post_view(request, post_id):
     return render(request, 'full_post.html', {
         'post': post
     })
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
