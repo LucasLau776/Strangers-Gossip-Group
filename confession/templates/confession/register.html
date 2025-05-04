@@ -6,54 +6,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register - MMU Strangers Gossip</title>
   <style>
-    /* 你原本的 CSS 保留不动（已省略） */
+    /* 你原本的CSS样式在这里，比如背景色、字体、按钮，保留你的设计 */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .register-form {
+      margin: 120px auto 0;
+      max-width: 400px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .register-form input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .register-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #377FC6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .register-form button:hover {
+      background-color: #2a64a4;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      margin-top: 40px;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Top Navigation -->
   <div class="top-nav">
     <div class="logo">
-      <a href="{% url 'register' %}">MMU Strangers Gossip</a>
+      <a href="{% url 'index' %}">MMU Strangers Gossip</a>
     </div>
-    <div class="search-container">
-      <input type="text" placeholder="Search...">
-    </div>
+    
+    <!-- 搜索表单 (GET，不需要csrf_token) -->
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+    
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Trending</a>
-      <a href="#">Post</a>
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
       <a href="{% url 'login' %}">Login</a>
       <a href="{% url 'register' %}">Register</a>
     </div>
   </div>
 
-  <!-- ✅ Register Form -->
+  <!-- Register Form -->
   <form class="register-form" method="POST" action="{% url 'register' %}">
     {% csrf_token %}
     <h2>Register</h2>
+    
     {% if error %}
-     <p style="color: red; text-align: center;">{{ error }}</p>
+      <p style="color: red; text-align: center;">{{ error }}</p>
     {% endif %}
+    
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Register</button>
   </form>
 
-  <!-- Dark Mode Toggle -->
-  <button class="floating-btn" id="themeToggle">🌙</button>
-
   <footer>
     <p>© 2025 MMU Strangers Gossip</p>
   </footer>
-
-  <script>
-    const toggleBtn = document.getElementById('themeToggle');
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    });
-  </script>
 
 </body>
 </html>

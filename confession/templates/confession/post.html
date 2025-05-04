@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - MMU Strangers Gossip</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post - MMU Strangers Gossip</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
-      color: #333;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #f0f0f0;
     }
 
     /* Top Navigation */
@@ -52,13 +45,6 @@
       font-size: 1rem;
       border-radius: 5px;
       border: none;
-      background-color: white;
-      color: #000;
-    }
-
-    body.dark-mode .search-container input {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
     }
 
     .nav-links {
@@ -78,58 +64,44 @@
       text-decoration: underline;
     }
 
-    /* Login Form */
-    .login-form {
-      width: 400px;
-      margin: 120px auto 40px;
-      padding: 20px;
+    /* Page Content */
+    .content {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .content h1 {
+      font-size: 2rem;
+    }
+
+    .post-form {
+      width: 60%;
+      margin: 30px auto;
       background-color: white;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(37, 123, 197, 0.1);
     }
 
-    body.dark-mode .login-form {
-      background-color: #1e1e1e;
-    }
-
-    .login-form h2 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .login-form input {
-      width: 95%;
-      padding: 10px 8px;
+    .post-form input,
+    .post-form textarea {
+      width: 100%;
+      padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      font-size: 1rem;
-      background-color: white;
-      color: #000;
     }
 
-    body.dark-mode .login-form input {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-      border: 1px solid #444;
-    }
-
-    body.dark-mode .login-form input:focus {
-      border-color: #377FC6;
-    }
-
-    .login-form button {
+    .post-form button {
       background-color: #377FC6;
       color: white;
       padding: 10px 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
     }
 
-    .login-form button:hover {
+    .post-form button:hover {
       background-color: #285a9e;
     }
 
@@ -139,26 +111,6 @@
       color: white;
       padding: 10px;
       text-align: center;
-    }
-
-    /* Floating Button */
-    .floating-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #555;
-      color: white;
-      transition: all 0.3s ease;
     }
 
     /* Responsive adjustments */
@@ -187,7 +139,7 @@
         width: 100%;
       }
 
-      .login-form {
+      .post-form {
         width: 90%;
       }
     }
@@ -219,31 +171,18 @@
     </div>
   </div>
 
- <!-- Login Form -->
- <form class="login-form" method="POST" action="/login/">
-  {% csrf_token %}
-   <h2>Login</h2>
-   <input type="text" name="username" placeholder="Username" required>
-   <input type="password" name="password" placeholder="Password" required>
-   <button type="submit">Login</button>
- </form>
+  <div class="content">
+    <h1>Create a New Post</h1>
+    <form class="post-form" method="POST" action="{% url 'post_confession' %}">
+      {% csrf_token %}
+      <input type="text" name="content" placeholder="Your thoughts..." rows="5" required>
+      <button type="submit">Submit Post</button>
+    </form>
+  </div>
 
-
-  <!-- Dark Mode Toggle -->
-  <button class="floating-btn" id="themeToggle">🌙</button>
-
-  <!-- Footer -->
   <footer>
     <p>© 2025 MMU Strangers Gossip</p>
   </footer>
-
-  <script>
-    const toggleBtn = document.getElementById('themeToggle');
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    });
-  </script>
 
 </body>
 </html>

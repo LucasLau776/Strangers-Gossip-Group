@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,6 @@
       margin: 0;
       padding: 0;
     }
-
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -24,19 +24,16 @@
       box-sizing: border-box;
       flex-wrap: wrap;
     }
-
     .logo a {
       color: white;
       text-decoration: none;
       font-size: 1.5rem;
       font-weight: bold;
     }
-
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
     }
-
     .search-container input {
       width: 100%;
       padding: 8px;
@@ -44,25 +41,21 @@
       border: none;
       font-size: 1rem;
     }
-
     .nav-links {
       display: flex;
       align-items: center;
     }
-
     .nav-links a {
       color: white;
       text-decoration: none;
       margin: 0 10px;
       font-size: 1rem;
     }
-
     .container {
       padding: 100px 20px 60px;
       max-width: 800px;
       margin: auto;
     }
-
     .post-content, .comments-section {
       background: white;
       padding: 20px;
@@ -70,34 +63,32 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
-
-    .upvote-btn {
+    .like-btn {
       background-color: #377FC6;
       color: white;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 0.9rem;
     }
-
-    .upvote-btn:hover {
+    .like-btn:hover {
       background-color: #2a64a4;
     }
-
+    .like-btn:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
     .comment {
       border-bottom: 1px solid #eee;
       padding: 10px 0;
     }
-
     .comment small {
       color: #888;
     }
-
     .reply-box {
       margin-top: 20px;
     }
-
     .reply-box textarea {
       width: 100%;
       height: 80px;
@@ -106,7 +97,6 @@
       border: 1px solid #ccc;
       font-size: 1rem;
     }
-
     .reply-box button {
       margin-top: 10px;
       background-color: #377FC6;
@@ -116,7 +106,16 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
+    .nested {
+      margin-left: 40px;
+      border-left: 2px solid #ccc;
+      padding-left: 10px;
+    }
+    .reply-link {
+      font-size: 0.9rem;
+      color: #377FC6;
+      cursor: pointer;
+    }
     footer {
       background-color: #377FC6;
       color: white;
@@ -132,17 +131,19 @@
   <div class="logo">
     <a href="{% url 'index' %}">MMU Strangers Gossip</a>
   </div>
-  
   <form method="GET" action="{% url 'search' %}" class="search-container">
     <input type="text" name="q" placeholder="Search..." required>
   </form>
-  
   <div class="nav-links">
     <a href="{% url 'index' %}">Home</a>
-    <a href="#">Trending</a>
+    <a href="{% url 'trending' %}">Trending</a>
     <a href="{% url 'post_confession' %}">Post</a>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'register' %}">Register</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
+    {% endif %}
   </div>
 </div>
 
@@ -152,41 +153,56 @@
     <h2>{{ confession.content }}</h2>
     <small>Posted by {{ confession.user }} at {{ confession.timestamp|date:"Y-m-d H:i" }}</small>
     <br>
-    <!-- Upvote Form -->
-    <form method="POST" action="{% url 'upvote_confession' confession.id %}">
-      {% csrf_token %}
-      <button type="submit" class="upvote-btn">
-        👍 Upvote ({{ confession.upvotes }})
-      </button>
-    </form>
+    {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'like_confession' confession.id %}">
+        {% csrf_token %}
+        {% if already_liked %}
+          <button type="submit" class="like-btn" disabled>👍 Liked ({{ confession.upvotes }})</button>
+        {% else %}
+          <button type="submit" class="like-btn">👍 Like ({{ confession.upvotes }})</button>
+        {% endif %}
+      </form>
+    {% else %}
+      <p><a href="{% url 'login' %}">Login</a> to like this post!</p>
+    {% endif %}
   </div>
 
   <div class="comments-section">
     <h3>Comments</h3>
 
     {% for comment in comments %}
-    <div class="comment">
-      <p>{{ comment.content }}</p>
-      <small>by {{ comment.user }} · {{ comment.timestamp|timesince }} ago</small>
-    </div>
-    {% empty %}
-    <p>No comments yet. Be the first to comment!</p>
+      {% include "confession/comment_recursive.html" with comment=comment confession=confession liked_comment_ids=liked_comment_ids %}
     {% endfor %}
 
-    <div class="reply-box">
-      <h4>Leave a comment</h4>
-      <form method="POST" action="{% url 'comment' confession.id %}">
-        {% csrf_token %}
-        <textarea name="content" placeholder="Type your reply..." required></textarea>
-        <button type="submit">Reply</button>
-      </form>
-    </div>
+    {% if user.is_authenticated %}
+      <div class="reply-box">
+        <h4>Leave a comment</h4>
+        <form method="POST" action="{% url 'comment' confession.id %}">
+          {% csrf_token %}
+          <textarea name="content" placeholder="Type your comment..." required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    {% else %}
+      <p><a href="{% url 'login' %}">Login</a> to comment!</p>
+    {% endif %}
   </div>
 </div>
 
 <footer>
   <p>© 2025 MMU Strangers Gossip</p>
 </footer>
+
+<script>
+  function toggleReply(id) {
+    const form = document.getElementById('reply-form-' + id);
+    if (form.style.display === "none") {
+      form.style.display = "block";
+    } else {
+      form.style.display = "none";
+    }
+  }
+</script>
 
 </body>
 </html>

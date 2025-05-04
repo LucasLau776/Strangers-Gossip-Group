@@ -152,8 +152,13 @@
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
-      <a href="{% url 'login' %}">Login</a>
-      <a href="{% url 'register' %}">Register</a>
+      
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a> <!-- ✅ 已登录的人看到Logout -->
+      {% else %}
+        <a href="{% url 'login' %}">Login</a> <!-- ✅ 没登录的人看到Login -->
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
     </div>
   </div>
 
