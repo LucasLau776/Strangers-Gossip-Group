@@ -7,9 +7,6 @@ SECRET_KEY = 'your-secret-key-here'
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 
-HANDLER404 = 'main.views.custom_404'
-HANDLER500 = 'main.views.custom_500'
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +35,7 @@ AUTH_USER_MODEL = 'auth.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR , 'main/templates')],
+        'DIRS': [BASE_DIR / 'main/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -51,6 +48,8 @@ TEMPLATES = [
     },
 ]
 
+WHITENOISE_AUTOREFRESH = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -60,11 +59,10 @@ DATABASES = {
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main/static'),
+STATICFILES_DIRS = [BASE_DIR / 'main/static',
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Email settings (remove if not using email functionality)
@@ -77,3 +75,7 @@ EMAIL_HOST_PASSWORD = 'your-email-password'
 
 SITE_DOMAIN = 'http://localhost:8000'
 DEFAULT_FROM_EMAIL = 'noreply@your-domain.com'
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+WHITENOISE_AUTOREFRESH = True

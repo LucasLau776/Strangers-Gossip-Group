@@ -1,10 +1,21 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
-<div style="background: {% if request.COOKIES.dark_mode == 'dark' %}#121212{% else %}#f8f9fa{% endif %}; min-height: 100vh; padding: 2rem; text-align: center;">
-  <h1 style="color: {% if request.COOKIES.dark_mode == 'dark' %}white{% else %}black{% endif %}">500</h1>
-  <p style="color: {% if request.COOKIES.dark_mode == 'dark' %}white{% else %}black{% endif %}">Server error occurred</p>
-  <a href="{% url 'index' %}" style="color: #90CAF9; text-decoration: underline;">Try Again</a>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>500</title>
+    <style>
+        body { 
+            background: black; 
+            color: white; 
+            text-align: center; 
+            padding: 50px;
+            font-family: Arial;
+        }
+        a { color: #90CAF9; }
+    </style>
+</head>
+<body>
+    <h1>500</h1>
+    <p>Server Error</p>
+    <a href="/">Try Again</a>
+</body>
+</html>

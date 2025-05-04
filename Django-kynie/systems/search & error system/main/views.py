@@ -79,5 +79,11 @@ def custom_404(request, exception):
 def custom_500(request):
     return render(request, '500.html', status=500)
 
-def trigger_error(request):
+def broken_view(request):
     raise Exception("Intentional error to test 500 page")
+
+def test_error(request):
+    raise Exception("Intentional 500 error")
+
+def trigger_error(request):
+    raise Exception("Test 500 Error")

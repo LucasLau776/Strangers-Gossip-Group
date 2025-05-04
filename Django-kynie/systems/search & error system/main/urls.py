@@ -11,5 +11,6 @@ urlpatterns = [
     path('notification/', views.notification_view, name='notification'),
     path('bookmark/', views.bookmark_view, name='bookmark'),
     path('post/<int:post_id>/', views.full_post_view, name='full_post'),
-
+    path('broken/', views.broken_view, name='broken'),
+    
 ]
