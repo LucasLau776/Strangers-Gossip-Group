@@ -1,0 +1,14 @@
+/* Add to existing styles.css */
+.error-page {
+    padding: 4rem;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .error-page h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
