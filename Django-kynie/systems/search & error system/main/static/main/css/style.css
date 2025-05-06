@@ -1,4 +1,9 @@
 /* static/css/styles.css */
+.dark-mode * {
+  background: inherit !important;
+  color: inherit !important;
+}
+
 body.dark-mode {
   background-color: #121212;
   color: #ffffff;
