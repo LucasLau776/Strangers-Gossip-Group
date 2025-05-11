@@ -41,6 +41,10 @@
       padding: 5px 10px;
     }
 
+    .logo a span {
+      color: inherit;
+    }
+
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -198,8 +202,10 @@
   <!-- Top Navigation -->
   <div class="top-nav">
     <div class="logo">
-      <a href="index.html">MMU Strangers Gossip</a>
-    </div>
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>    
     
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Confession(models.Model):
     content = models.TextField()  
@@ -35,4 +36,11 @@ class CommentLike(models.Model):
     liked_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'comment')        
+        unique_together = ('user', 'comment')    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    last_post_time = models.DateTimeField(null=True, blank=True)  # 上次发帖时间
+
+    def __str__(self):
+        return self.user.username           

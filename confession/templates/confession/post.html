@@ -34,6 +34,10 @@
       padding: 5px 10px;
     }
 
+    .logo a span {
+      color: inherit;
+    }
+
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -105,6 +109,12 @@
       background-color: #285a9e;
     }
 
+    .error-message {
+      color: red;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
     /* Footer */
     footer {
       background-color: #377FC6;
@@ -150,22 +160,24 @@
   <!-- Top Navigation -->
   <div class="top-nav">
     <div class="logo">
-      <a href="index.html">MMU Strangers Gossip</a>
-    </div>
-    
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>        
+
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
-    
+
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
-      
+
       {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a> <!-- ✅ 已登录的人看到Logout -->
+        <a href="{% url 'logout' %}">Logout</a>
       {% else %}
-        <a href="{% url 'login' %}">Login</a> <!-- ✅ 没登录的人看到Login -->
+        <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
       {% endif %}
     </div>
@@ -173,6 +185,12 @@
 
   <div class="content">
     <h1>Create a New Post</h1>
+
+    <!-- 显示 cooldown 错误信息 -->
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+
     <form class="post-form" method="POST" action="{% url 'post_confession' %}">
       {% csrf_token %}
       <input type="text" name="content" placeholder="Your thoughts..." rows="5" required>

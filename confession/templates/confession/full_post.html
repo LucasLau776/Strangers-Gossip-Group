@@ -30,6 +30,11 @@
       font-size: 1.5rem;
       font-weight: bold;
     }
+
+    .logo a span {
+      color: inherit; /* 防止父元素强制覆盖子元素颜色 */
+    }
+
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -129,8 +134,11 @@
 <!-- Top Nav -->
 <div class="top-nav">
   <div class="logo">
-    <a href="{% url 'index' %}">MMU Strangers Gossip</a>
-  </div>
+    <a href="{% url 'index' %}">
+      <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+    </a>
+  </div>  
+  
   <form method="GET" action="{% url 'search' %}" class="search-container">
     <input type="text" name="q" placeholder="Search..." required>
   </form>
