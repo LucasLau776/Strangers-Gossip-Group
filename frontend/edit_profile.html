@@ -83,7 +83,7 @@
       font-weight: bold;
     }
 
-    input[type="text"], textarea, select {
+    input[type="text"], textarea, select, input[type="password"] {
       width: 100%;
       padding: 10px;
       border-radius: 5px;
@@ -176,6 +176,10 @@
       color: white;
     }
 
+    .password-change input {
+      margin-bottom: 10px;
+    }
+
     @media (max-width: 768px) {
       .top-nav {
         flex-direction: column;
@@ -214,6 +218,26 @@
       <div class="form-group">
         <label for="username">Display Username:</label>
         <input type="text" id="username" name="username" maxlength="20" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="user@example.com" disabled>
+      </div>
+
+      <div class="form-group">
+        <label>Change Password:</label>
+        <div class="password-change">
+          <input type="password" id="currentPassword" name="currentPassword" 
+                 placeholder="Current Password">
+          <input type="password" id="newPassword" name="newPassword" 
+                 placeholder="New Password">
+          <input type="password" id="confirmPassword" name="confirmPassword" 
+                 placeholder="Confirm New Password">
+        </div>
+        <small style="display: block; margin-top: 5px; color: #666;">
+          Leave blank to keep current password
+        </small>
       </div>
 
       <div class="form-group">
@@ -276,6 +300,25 @@
       }
       document.getElementById('wordCount').textContent = `${textarea.value.trim().split(/\s+/).length}/${limit} words`;
     }
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (currentPassword || newPassword || confirmPassword) {
+        if (!currentPassword) {
+          alert('Please enter your current password');
+          e.preventDefault();
+          return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+          alert('New password and confirmation password do not match!');
+          e.preventDefault();
+        }
+      }
+    });
   </script>
 </body>
 </html>
