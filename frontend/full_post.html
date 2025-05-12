@@ -13,10 +13,12 @@
       padding: 0;
       transition: background-color 0.3s, color 0.3s;
     }
+
     body.dark-mode {
       background-color: #121212;
       color: #f0f0f0;
     }
+
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -30,16 +32,19 @@
       box-sizing: border-box;
       flex-wrap: wrap;
     }
+
     .logo a {
       color: white;
       text-decoration: none;
       font-size: 1.5rem;
       font-weight: bold;
     }
+
     .search-container {
       flex-grow: 1;
       margin: 10px;
     }
+
     .search-container input {
       width: 100%;
       padding: 8px;
@@ -49,26 +54,31 @@
       background-color: white;
       color: black;
     }
+
     body.dark-mode .search-container input {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
+
     .nav-links {
       display: flex;
       align-items: center;
     }
+
     .nav-links a {
       color: white;
       text-decoration: none;
       margin: 0 10px;
       font-size: 1rem;
     }
+
     .container {
       padding: 100px 20px 60px;
       max-width: 800px;
       margin: auto;
     }
+
     .post-content, .comments-section {
       background: white;
       padding: 20px;
@@ -76,9 +86,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
+
     body.dark-mode .post-content, body.dark-mode .comments-section {
       background-color: #1e1e1e;
     }
+
     .action-btns button {
       margin-right: 10px;
       padding: 8px 16px;
@@ -86,24 +98,30 @@
       border: none;
       cursor: pointer;
     }
+
     .like-btn, .save-btn {
       background-color: #377FC6;
       color: white;
     }
+
     .report-btn {
       background-color: crimson;
       color: white;
     }
+
     .comment {
       border-bottom: 1px solid #eee;
       padding: 10px 0;
     }
+
     .comment small {
       color: #888;
     }
+
     .comment-actions {
       margin-top: 5px;
     }
+
     .comment-actions button {
       margin-right: 8px;
       background-color: #e0e0e0;
@@ -112,13 +130,16 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
     body.dark-mode .comment-actions button {
       background-color: #555;
       color: white;
     }
+
     .reply-input {
       margin-top: 10px;
     }
+
     .reply-input textarea {
       width: 98%;
       height: 60px;
@@ -129,11 +150,13 @@
       background-color: white;
       color: black;
     }
+
     body.dark-mode .reply-input textarea {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
+
     .reply-input button {
       margin-top: 5px;
       background-color: #377FC6;
@@ -143,9 +166,11 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
     .reply-input.hidden {
       display: none;
     }
+
     .new-comment textarea {
       width: 98%;
       padding: 10px;
@@ -155,11 +180,13 @@
       background-color: white;
       color: black;
     }
+
     body.dark-mode .new-comment textarea {
       background-color: #333;
       color: white;
       border: 1px solid #666;
     }
+
     .new-comment button {
       margin-top: 8px;
       background-color: #377FC6;
@@ -169,6 +196,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
     .floating-btn {
       position: fixed;
       width: 50px;
@@ -183,24 +211,35 @@
       transition: all 0.3s ease;
       border: none;
     }
+
     #themeToggle {
       bottom: 20px;
       right: 20px;
       background-color: #555;
       color: white;
     }
+
     #bookmarkFloatBtn {
       bottom: 20px;
       left: 20px;
       background-color: #50eabc;
       color: white;
     }
+
     #notifBtn {
       bottom: 80px;
       left: 20px;
       background-color: #45f1f4;
       color: white;
     }
+
+        #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
     footer {
       background-color: #377FC6;
       color: white;
@@ -271,6 +310,7 @@
 <button class="floating-btn" id="themeToggle">🌙</button>
 <button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
 <button class="floating-btn" id="bookmarkFloatBtn" onclick="location.href='bookmark.html'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='profile.html'">👤</button>
 
 <footer>
   <p>© 2025 MMU Strangers Gossip</p>

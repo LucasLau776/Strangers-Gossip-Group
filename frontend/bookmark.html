@@ -78,6 +78,23 @@
       text-decoration: underline;
     }
 
+    .profile-circle {
+      position: fixed;
+      top: 70px;
+      left: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: #7c88ff;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      z-index: 999;
+    }
+
     .container {
       padding: 100px 20px 60px;
       max-width: 800px;
@@ -147,7 +164,7 @@
       color: white;
     }
 
-    #bookmarkFloatBtn {
+    #bookmarkBtn {
       bottom: 20px;
       left: 20px;
       background-color: #50eabc;
@@ -158,6 +175,13 @@
       bottom: 80px;
       left: 20px;
       background-color: #45f1f4;
+      color: white;
+    }
+
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
       color: white;
     }
   </style>
@@ -175,7 +199,7 @@
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="trending.html">Trending</a>
-    <a href="notifications.html">Notifications</a>
+    <a href="notification.html">Notifications</a>
     <a href="login.html">Login</a>
     <a href="register.html">Register</a>
   </div>
@@ -193,14 +217,13 @@
     <h3 class="post-title">This post was really relatable</h3>
     <p class="post-body">"Sometimes I just want to stay in the library and avoid people. Anyone else?"</p>
   </div>
-
-  <!-- You can duplicate this block for more saved posts -->
 </div>
 
 <!-- Floating Buttons -->
 <button class="floating-btn" id="themeToggle">🌙</button>
 <button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
-<button class="floating-btn" id="bookmarkFloatBtn" onclick="location.href='bookmark.html'">📑</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='bookmark.html'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='profile.html'">👤</button>
 
 <!-- Footer -->
 <footer>
