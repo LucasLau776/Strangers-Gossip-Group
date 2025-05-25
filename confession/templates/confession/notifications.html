@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+  {% include "confession/navbar.html" %}
+
+  <div class="container">
+    <h2 style="text-align:center;">Your Notifications</h2>
+    {% if notifications %}
+      <ul style="text-align:left; list-style: none; padding: 0;">
+        {% for notification in notifications %}
+          <li style="margin-bottom: 10px; {% if not notification.is_read %}font-weight: bold;{% endif %}">
+            {{ notification.message }}
+            <form method="POST" action="{% url 'mark_as_read' notification.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn">Mark as Read</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No notifications found.</p>
+    {% endif %}
+  </div>
+
+  {% include "confession/floating_buttons.html" %}
+  {% include "confession/footer.html" %}
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

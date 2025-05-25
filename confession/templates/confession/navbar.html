@@ -1,0 +1,19 @@
+<div class="top-nav">
+  <div class="logo">
+    <a href="{% url 'index' %}">
+      <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+    </a>
+  </div>        
+  
+  <form method="GET" action="{% url 'search' %}" class="search-container">
+    <input type="text" name="q" placeholder="Search..." required>
+  </form>
+  
+  <div class="nav-links">
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'trending' %}">Trending</a>
+    <a href="{% url 'post_confession' %}">Post</a>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+  </div>
+</div>

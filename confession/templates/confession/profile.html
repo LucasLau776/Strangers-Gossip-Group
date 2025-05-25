@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Settings - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <h2>Profile Settings</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="username">Username:</label><br>
+    <input type="text" name="username" id="username" value="{{ user.username }}" required><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" name="email" id="email" value="{{ user.email }}"><br><br>
+
+    <label for="avatar">Profile Picture:</label><br>
+    <input type="file" name="avatar" id="avatar"><br><br>
+
+    <label for="password">New Password:</label><br>
+    <input type="password" name="password" id="password"><br><br>
+
+    <button type="submit">Update Profile</button>
+  </form>
+</body>
+</html>

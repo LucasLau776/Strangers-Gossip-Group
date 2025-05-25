@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Posts - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .post.saved {
+      background-color: #e6f7ff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .post-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .post-body {
+      margin-bottom: 10px;
+    }
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+{% include 'confession/navbar.html' %}
+
+<div class="container mt-5" style="max-width: 800px;">
+  <h2 class="text-center mb-4 fw-bold">Saved Posts</h2>
+
+  {% for save in saved_posts %}
+    <div class="post saved">
+      <div class="post-header">
+        <span>{% if save.post.user %}{{ save.post.user.username }}{% else %}Anonymous{% endif %}</span>
+        <span class="text-muted">Saved {{ save.saved_at|timesince }} ago</span>
+      </div>
+      <h3 class="post-title">
+        <a href="{% url 'full_post' save.post.id %}" style="text-decoration: none; color: black;">
+          {{ save.post.title }}
+        </a>
+      </h3>
+      <p class="post-body">"{{ save.post.content }}"</p>
+    </div>
+  {% empty %}
+    <p class="text-center">You have no saved posts.</p>
+  {% endfor %}
+</div>
+
+<!-- Floating Buttons -->
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'notifications' %}'">🔔</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark' %}'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'index' %}'">👤</button>
+
+{% include 'confession/footer.html' %}
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀' : '🌙';
+  });
+</script>
+
+</body>
+</html>

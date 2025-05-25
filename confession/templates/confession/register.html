@@ -5,12 +5,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register - MMU Strangers Gossip</title>
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
     }
 
     .top-nav {
@@ -46,6 +54,11 @@
       border: none;
     }
 
+    body.dark-mode .search-container input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
@@ -75,12 +88,26 @@
       align-items: center;
     }
 
+    body.dark-mode .register-form {
+      background-color: #1e1e1e;
+    }
+
     .register-form input {
       width: 100%;
       margin-bottom: 10px;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+    }
+
+    body.dark-mode .register-form input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+      border: 1px solid #444;
+    }
+
+    body.dark-mode .register-form input:focus {
+      border-color: #377FC6;
     }
 
     .register-form button {
@@ -104,23 +131,39 @@
       text-align: center;
       margin-top: 40px;
     }
+
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #555;
+      color: white;
+      transition: all 0.3s ease;
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- Top Navigation -->
+  <!-- ✅ Top Navbar 保留你的设计 -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
     </div>        
-    
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
-    
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
@@ -130,24 +173,39 @@
     </div>
   </div>
 
-  <!-- Register Form -->
+  <!-- ✅ Register Form 保留你的排版结构，3个字段：username, email, password -->
   <form class="register-form" method="POST" action="{% url 'register' %}">
     {% csrf_token %}
     <h2>Register</h2>
-    
-    {% if error %}
-      <p style="color: red; text-align: center;">{{ error }}</p>
+
+    {% if form.errors %}
+      <div style="color: red; text-align: center;">
+        {{ form.errors }}
+      </div>
     {% endif %}
 
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="email" name="email" placeholder="MMU Email" required>
-    <input type="password" name="password" placeholder="Password" required>
+    {{ form.username }}
+    {{ form.email }}
+    {{ form.password }}
+
     <button type="submit">Register</button>
   </form>
+
+  <!-- ✅ Dark Mode -->
+  <button class="floating-btn" id="themeToggle">🌙</button>
 
   <footer>
     <p>© 2025 MMU Strangers Gossip</p>
   </footer>
 
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+  </script>
+
+  <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

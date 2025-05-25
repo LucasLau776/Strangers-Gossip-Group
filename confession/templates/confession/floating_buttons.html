@@ -1,0 +1,53 @@
+<style>
+  .floating-btn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  #themeToggle {
+    bottom: 20px;
+    right: 20px;
+    background-color: #555;
+    color: white;
+  }
+  #bookmarkBtn {
+    bottom: 20px;
+    left: 20px;
+    background-color: #50eabc;
+    color: white;
+  }
+  #notifBtn {
+    bottom: 80px;
+    left: 20px;
+    background-color: #45f1f4;
+    color: white;
+  }
+  #profileBtn {
+    top: 70px;
+    left: 20px;
+    background-color: #7c88ff;
+    color: white;
+  }
+</style>
+
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'notifications' %}'">🔔</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark' %}'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'index' %}'">👤</button>
+
+<script>
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  });
+</script>

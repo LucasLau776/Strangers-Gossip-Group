@@ -1,206 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post - MMU Strangers Gossip</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Post - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    /* Top Navigation */
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      background-color: #377FC6;
-      padding: 10px 20px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 10;
-      box-sizing: border-box;
-      flex-wrap: wrap;
-    }
-
-    .logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 5px 10px;
-    }
-
-    .logo a span {
-      color: inherit;
-    }
-
-    .search-container {
-      flex-grow: 1;
-      margin: 0 10px;
-    }
-
-    .search-container input {
-      width: 100%;
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: none;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 1rem;
-      padding: 5px 10px;
-    }
-
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
-
-    /* Page Content */
-    .content {
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .content h1 {
+    .form-title-outside {
+      width: 700px;
+      margin: 100px auto 0 auto;
+      padding-left: 30px;
+      padding-right: 30px;
       font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+      text-align: left;
     }
 
-    .post-form {
-      width: 60%;
-      margin: 30px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(37, 123, 197, 0.1);
-    }
-
-    .post-form input,
-    .post-form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    .post-form button {
-      background-color: #377FC6;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .post-form button:hover {
-      background-color: #285a9e;
-    }
-
-    .error-message {
-      color: red;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #377FC6;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .top-nav {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-      }
-
-      .logo a {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-      }
-
-      .nav-links {
-        flex-direction: column;
-        margin-top: 10px;
-      }
-
-      .nav-links a {
-        margin: 5px 0;
-      }
-
-      .search-container {
-        width: 100%;
-      }
-
-      .post-form {
-        width: 90%;
-      }
+    /* 让 container 回到原来偏低的位置 */
+    .post-form-container {
+      margin-top: 20px !important;
     }
   </style>
 </head>
 <body>
+  {% include 'confession/navbar.html' %}
 
-  <!-- Top Navigation -->
-  <div class="top-nav">
-    <div class="logo">
-      <a href="{% url 'index' %}">
-        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
-      </a>
-    </div>        
+  <h1 class="form-title-outside">Create a New Post</h1>
 
-    <form method="GET" action="{% url 'search' %}" class="search-container">
-      <input type="text" name="q" placeholder="Search..." required>
-    </form>
-
-    <div class="nav-links">
-      <a href="{% url 'index' %}">Home</a>
-      <a href="{% url 'trending' %}">Trending</a>
-      <a href="{% url 'post_confession' %}">Post</a>
-
-      {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-      {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="content">
-    <h1>Create a New Post</h1>
-
-    <!-- 显示 cooldown 错误信息 -->
-    {% if error %}
-      <div class="error-message">{{ error }}</div>
-    {% endif %}
-
-    <form class="post-form" method="POST" action="{% url 'post_confession' %}">
+  <div class="post-form-container">
+    <form method="POST" action="{% url 'submit_post' %}">
       {% csrf_token %}
-      <input type="text" name="content" placeholder="Your thoughts..." rows="5" required>
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="content" rows="6" placeholder="Time to gossip! Share something..." required></textarea>
       <button type="submit">Submit Post</button>
     </form>
   </div>
 
-  <footer>
-    <p>© 2025 MMU Strangers Gossip</p>
-  </footer>
-
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
 </body>
 </html>

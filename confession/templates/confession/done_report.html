@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Report Submitted</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .top-nav {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .container {
+      padding: 150px 20px 100px 20px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h2 {
+      color: #377FC6;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      background-color: #377FC6;
+      color: white;
+      padding: 10px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #2a64a4;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-nav">
+  <h2>
+    
+  </h2>
+</div>
+
+<div class="container">
+  <h2> Thank you for your report!</h2>
+  <p>We’ve received your report and will take action if necessary.</p>
+  <a href="{% url 'index' %}">Back to Home</a>
+</div>
+
+<footer>
+  <p>© 2025 MMU Strangers Gossip</p>
+</footer>
+
+<script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+</html>
