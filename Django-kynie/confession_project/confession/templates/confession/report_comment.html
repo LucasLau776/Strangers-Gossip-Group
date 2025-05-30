@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report Comment - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <style>
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #f0f0f0 !important;
+    }
+
+    body.dark-mode .top-nav {
+      background-color: #1e1e1e !important;
+      color: #f0f0f0 !important;
+    }
+
+    body.dark-mode main {
+      background-color: #1e1e1e !important;
+      color: #f0f0f0 !important;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    body.dark-mode textarea,
+    body.dark-mode textarea:focus {
+      background-color: #2c2c2c !important;
+      color: #f0f0f0 !important;
+      border: 1px solid #444 !important;
+    }
+
+    body.dark-mode button {
+      background-color: #377FC6 !important;
+      color: white !important;
+      border: none !important;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    body.dark-mode button:hover {
+      background-color: #2f6cab !important;
+    }
+
+    .top-nav {
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top-nav .logo a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    main {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    textarea {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #005BAC;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>
+  </div>
+
+  <main style="max-width: 600px; margin: 100px auto;">
+    <h2>Report Comment</h2>
+    <p><strong>Comment:</strong> {{ comment.content }}</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <label for="reason">Reason for report:</label><br>
+      <textarea name="reason" id="reason" rows="4" required style="width: 100%;"></textarea><br><br>
+      <button type="submit">Submit Report</button>
+    </form>
+  </main>
+
+</body>
+</html>

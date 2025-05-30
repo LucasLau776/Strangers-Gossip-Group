@@ -1,0 +1,76 @@
+<style>
+  .floating-btn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  #themeToggle {
+    bottom: 20px;
+    right: 20px;
+    background-color: #555;
+    color: white;
+  }
+  #bookmarkBtn {
+    bottom: 20px;
+    left: 20px;
+    background-color: #50eabc;
+    color: white;
+  }
+  #notifBtn {
+    bottom: 80px;
+    left: 20px;
+    background-color: #45f1f4;
+    color: white;
+  }
+  #profileBtn {
+    top: 70px;
+    left: 20px;
+    background-color: #7c88ff;
+    color: white;
+  }
+</style>
+
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'get_notifications' %}'">🔔</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark_page' %}'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'profile' %}'">👤</button>
+
+<script>
+  const themeBtn = document.getElementById('themeToggle');
+
+  // On page load, check if theme is saved in localStorage
+  window.onload = function() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeBtn.textContent = '☀️'; // Icon for dark mode
+    } else {
+      document.body.classList.remove('dark-mode');
+      themeBtn.textContent = '🌙'; // Icon for light mode
+    }
+  };
+
+  // Toggle theme and update button icon when clicked
+  themeBtn.addEventListener('click', () => {
+    const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    // Toggle dark-mode class
+    document.body.classList.toggle('dark-mode', newTheme === 'dark');
+
+    // Change button text/icon
+    themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+
+    // Save the new theme in localStorage
+    localStorage.setItem("theme", newTheme);
+  });
+</script>
