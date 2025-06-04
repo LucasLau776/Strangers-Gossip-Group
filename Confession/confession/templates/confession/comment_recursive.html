@@ -1,0 +1,31 @@
+<div class="comment {% if comment.parent %}nested{% endif %}">
+  <p>{{ comment.content }}</p>
+  <small>by {{ comment.user }} · {{ comment.timestamp|timesince }} ago</small>
+
+  {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'like_comment' comment.id %}">
+      {% csrf_token %}
+      {% if comment.id in liked_comment_ids %}
+        <button type="submit" class="like-btn" disabled>❤️ Liked ({{ comment.upvotes }})</button>
+      {% else %}
+        <button type="submit" class="like-btn">❤️ Like ({{ comment.upvotes }})</button>
+      {% endif %}
+    </form>
+
+    <p class="reply-link" onclick="toggleReply('{{ comment.id }}')">↪️ Reply</p>
+    <form id="reply-form-{{ comment.id }}" class="reply-box" method="POST" action="{% url 'comment' confession.id %}" style="display:none;">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Reply to this comment..." required></textarea>
+      <input type="hidden" name="parent_id" value="{{ comment.id }}">
+      <button type="submit">Submit Reply</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to reply or like this comment</p>
+  {% endif %}
+
+  {% if comment.child_comments %}
+    {% for child in comment.child_comments %}
+      {% include 'confession/comment_recursive.html' with comment=child confession=confession liked_comment_ids=liked_comment_ids %}
+    {% endfor %}
+  {% endif %}
+</div>
