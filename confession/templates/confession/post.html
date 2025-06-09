@@ -1,18 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post - MMU Strangers Gossip</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Post - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Top Navigation */
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -34,10 +43,6 @@
       padding: 5px 10px;
     }
 
-    .logo a span {
-      color: inherit;
-    }
-
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -49,6 +54,8 @@
       font-size: 1rem;
       border-radius: 5px;
       border: none;
+      background-color: white;
+      color: #000;
     }
 
     .nav-links {
@@ -68,54 +75,151 @@
       text-decoration: underline;
     }
 
-    /* Page Content */
-    .content {
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .content h1 {
+    .form-title-outside {
+      width: 700px;
+      margin: 100px auto 0 auto;
+      padding-left: 30px;
+      padding-right: 30px;
       font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+      text-align: left;
     }
 
-    .post-form {
-      width: 60%;
-      margin: 30px auto;
-      background-color: white;
+    body.dark-mode .form-title-outside {
+      color: #f0f0f0;
+    }
+
+    .post-form-container {
+      width: 700px;
+      margin: 20px auto 40px auto;
       padding: 20px;
+      background-color: white;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(37, 123, 197, 0.1);
     }
 
-    .post-form input,
-    .post-form textarea {
+    body.dark-mode .post-form-container {
+      background-color: #1e1e1e;
+    }
+
+    .post-form-container input,
+    .post-form-container textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid #ddd;
+      font-size: 1rem;
+      border: 1px solid #ccc;
       border-radius: 5px;
+      background-color: white;
+      color: #000;
     }
 
-    .post-form button {
+    body.dark-mode .post-form-container input,
+    body.dark-mode .post-form-container textarea {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+      border: 1px solid #444;
+    }
+
+    body.dark-mode .post-form-container input:focus,
+    body.dark-mode .post-form-container textarea:focus {
+      border-color: #377FC6;
+    }
+
+    .post-form-container button {
       background-color: #377FC6;
       color: white;
       padding: 10px 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 1rem;
+      width: 100%;
     }
 
-    .post-form button:hover {
+    .post-form-container button:hover {
       background-color: #285a9e;
     }
 
-    .error-message {
-      color: red;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
+    .auth-required-message {
+      text-align: center;
+      margin: 100px auto;
+      max-width: 500px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      color: #333;
     }
 
-    /* Footer */
+    body.dark-mode .auth-required-message {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    .auth-required-message h2 {
+      color: #377FC6;
+      margin-bottom: 15px;
+    }
+
+    body.dark-mode .auth-required-message h2 {
+      color: #6aa8f0;
+    }
+
+    .auth-required-message a {
+      color: #377FC6;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    body.dark-mode .auth-required-message a {
+      color: #82b7f8;
+    }
+
+    .auth-required-message a:hover {
+      text-decoration: underline;
+    }
+
+    /* Floating buttons styles */
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
     footer {
       background-color: #377FC6;
       color: white;
@@ -123,7 +227,6 @@
       text-align: center;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .top-nav {
         flex-direction: column;
@@ -149,21 +252,20 @@
         width: 100%;
       }
 
-      .post-form {
+      .form-title-outside,
+      .post-form-container {
         width: 90%;
       }
     }
   </style>
 </head>
-<body>
-
-  <!-- Top Navigation -->
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
-    </div>        
+    </div>
 
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
@@ -183,24 +285,49 @@
     </div>
   </div>
 
-  <div class="content">
-    <h1>Create a New Post</h1>
+  {% if user.is_authenticated %}
+    <h1 class="form-title-outside">Create a New Post</h1>
+    <div class="post-form-container">
+      <form method="POST" action="#" id="post-form">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Title" required value="{{ form.title.value|default_if_none:'' }}">
+        <textarea name="content" rows="6" placeholder="Time to gossip! Share something..." required>{{ form.content.value|default_if_none:'' }}</textarea>
+        <button type="submit" id="submit-post-btn">Submit Post</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="auth-required-message">
+      <h2>You need to login to create a post</h2>
+      <p>Please <a href="{% url 'login' %}?next={% url 'submit_post' %}">login</a> or <a href="{% url 'register' %}?next={% url 'submit_post' %}">register</a> to share your gossip.</p>
+    </div>
+  {% endif %}
 
-    <!-- 显示 cooldown 错误信息 -->
-    {% if error %}
-      <div class="error-message">{{ error }}</div>
-    {% endif %}
+  <!-- Floating Buttons -->
+  <button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'get_notifications' %}'">🔔</button>
+  <button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark_page' %}'">📑</button>
+  <button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'profile' %}'">👤</button>
+  <button class="floating-btn" id="themeToggle">🌙</button>
 
-    <form class="post-form" method="POST" action="{% url 'post_confession' %}">
-      {% csrf_token %}
-      <input type="text" name="content" placeholder="Your thoughts..." rows="5" required>
-      <button type="submit">Submit Post</button>
-    </form>
-  </div>
-
-  <footer>
-    <p>© 2025 MMU Strangers Gossip</p>
-  </footer>
-
+  {% include 'confession/footer.html' %}
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+    window.onload = function() {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeBtn.textContent = '☀️';
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeBtn.textContent = '🌙';
+      }
+    };
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.classList.toggle('dark-mode', newTheme === 'dark');
+      themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem("theme", newTheme);
+    });
+  </script>
 </body>
-</html>

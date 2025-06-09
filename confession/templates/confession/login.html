@@ -1,9 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,13 +16,11 @@
       color: #333;
       transition: background-color 0.3s, color 0.3s;
     }
-
     body.dark-mode {
       background-color: #121212;
       color: #f0f0f0;
     }
 
-    /* Top Navigation */
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -32,7 +33,6 @@
       box-sizing: border-box;
       flex-wrap: wrap;
     }
-
     .logo a {
       color: white;
       text-decoration: none;
@@ -40,16 +40,10 @@
       font-weight: bold;
       padding: 5px 10px;
     }
-
-    .logo a span {
-      color: inherit;
-    }
-
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
     }
-
     .search-container input {
       width: 100%;
       padding: 8px;
@@ -59,17 +53,14 @@
       background-color: white;
       color: #000;
     }
-
     body.dark-mode .search-container input {
       background-color: #2c2c2c;
       color: #f0f0f0;
     }
-
     .nav-links {
       display: flex;
       align-items: center;
     }
-
     .nav-links a {
       color: white;
       text-decoration: none;
@@ -77,75 +68,82 @@
       font-size: 1rem;
       padding: 5px 10px;
     }
-
     .nav-links a:hover {
       text-decoration: underline;
     }
 
-    /* Login Form */
-    .login-form {
-      width: 400px;
-      margin: 120px auto 40px;
-      padding: 20px;
+    .login-form-container {
+      max-width: 400px;
+      margin: 120px auto 40px auto;
+      padding: 30px 25px;
       background-color: white;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(37, 123, 197, 0.1);
+      box-shadow: 0 4px 15px rgb(37 123 197 / 0.15);
+      transition: background-color 0.3s, color 0.3s;
     }
-
-    body.dark-mode .login-form {
+    body.dark-mode .login-form-container {
       background-color: #1e1e1e;
+      color: #f0f0f0;
+      box-shadow: 0 4px 15px rgb(60 160 255 / 0.3);
     }
-
-    .login-form h2 {
-      margin-bottom: 20px;
+    .login-form-container h2 {
       text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
     }
-
-    .login-form input {
-      width: 95%;
-      padding: 10px 8px;
-      margin-bottom: 15px;
+    .login-form-container input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 18px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 1rem;
       background-color: white;
       color: #000;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
-
-    body.dark-mode .login-form input {
+    body.dark-mode .login-form-container input {
       background-color: #2c2c2c;
+      border-color: #444;
       color: #f0f0f0;
-      border: 1px solid #444;
     }
-
-    body.dark-mode .login-form input:focus {
+    .login-form-container input:focus {
+      outline: none;
       border-color: #377FC6;
+      box-shadow: 0 0 8px #377FC6;
+      background-color: white;
+      color: #000;
     }
-
-    .login-form button {
-      background-color: #377FC6;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    body.dark-mode .login-form-container input:focus {
+      background-color: #3a3a3a;
+      color: #f0f0f0;
+    }
+    .login-form-container button {
       width: 100%;
-      font-size: 1rem;
+      background-color: #377FC6;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-
-    .login-form button:hover {
+    .login-form-container button:hover {
       background-color: #285a9e;
     }
 
-    /* Footer */
     footer {
       background-color: #377FC6;
       color: white;
       padding: 10px;
       text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
 
-    /* Floating Button */
     .floating-btn {
       position: fixed;
       bottom: 20px;
@@ -165,91 +163,90 @@
       transition: all 0.3s ease;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .top-nav {
         flex-direction: column;
         align-items: center;
         padding: 10px;
       }
-
       .logo a {
         font-size: 1.2rem;
         margin-bottom: 10px;
       }
-
       .nav-links {
         flex-direction: column;
         margin-top: 10px;
       }
-
       .nav-links a {
         margin: 5px 0;
       }
-
       .search-container {
         width: 100%;
-      }
-
-      .login-form {
-        width: 90%;
+        margin: 10px 0;
       }
     }
   </style>
 </head>
 <body>
-
-  <!-- Top Navigation -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
-    </div>    
-    
+    </div>
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
-    
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
-      
       {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a> <!-- ✅ 已登录的人看到Logout -->
+        <a href="{% url 'logout' %}">Logout</a>
       {% else %}
-        <a href="{% url 'login' %}">Login</a> <!-- ✅ 没登录的人看到Login -->
+        <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
       {% endif %}
     </div>
   </div>
 
- <!-- Login Form -->
- <form class="login-form" method="POST" action="/login/">
-  {% csrf_token %}
-   <h2>Login</h2>
-   <input type="text" name="username" placeholder="Username" required>
-   <input type="password" name="password" placeholder="Password" required>
-   <button type="submit">Login</button>
- </form>
+  <div class="login-form-container">
+    <h2>Login</h2>
+    <form method="POST" action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        
+        {{ form.username }}
+        {{ form.password }}
+        
+        <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 15px;">
+        Don't have an account? <a href="{% url 'register' %}?next={{ next }}" style="color: #377FC6;">Register here</a>
+    </p>
+  </div>
 
-
-  <!-- Dark Mode Toggle -->
   <button class="floating-btn" id="themeToggle">🌙</button>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 MMU Strangers Gossip</p>
-  </footer>
+  {% include 'confession/footer.html' %}
 
   <script>
     const toggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      body.classList.add('dark-mode');
+      toggleBtn.textContent = '☀️';
+    }
+
     toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      body.classList.toggle('dark-mode');
+      const isDarkMode = body.classList.contains('dark-mode');
+      toggleBtn.textContent = isDarkMode ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
   </script>
-
 </body>
 </html>

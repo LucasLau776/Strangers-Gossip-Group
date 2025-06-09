@@ -1,18 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trending - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
     }
 
-    /* Top Navigation */
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -34,10 +42,6 @@
       padding: 5px 10px;
     }
 
-    .logo a span {
-      color: inherit;
-    }
-
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -49,6 +53,13 @@
       font-size: 1rem;
       border-radius: 5px;
       border: none;
+      background-color: white;
+      color: #000;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
     }
 
     .nav-links {
@@ -68,50 +79,58 @@
       text-decoration: underline;
     }
 
-    /* Trending Content */
-    .content {
-      padding: 100px 20px 40px;
+    .container {
       max-width: 800px;
-      margin: auto;
+      margin: 100px auto 60px;
+      padding: 0 15px;
     }
 
-    .post-link {
-      text-decoration: none;
-      color: inherit;
+    .post-card {
+      background-color: #ffffff;
+      color: #000000;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    .post-box {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: background-color 0.3s, transform 0.3s;
+    .post-card h3 {
+      color: #1c4c8a;
+      font-size: 1.3rem;
+      margin: 6px 0 0;
     }
 
-    .post-box:hover {
-      background-color: #f0f8ff;
-      transform: scale(1.02);
+    .post-card p {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #222;
     }
 
-    .post-box h3 {
-      margin-top: 0;
+    body.dark-mode .post-card {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
     }
 
-    .post-box p {
-      margin: 10px 0;
-      color: #555;
+    body.dark-mode .post-card h3 {
+      color: #7c88ff;
     }
 
-    /* Footer */
+    body.dark-mode .post-card p {
+      color: #e0e0e0;
+    }
+
     footer {
       background-color: #377FC6;
       color: white;
       padding: 10px;
       text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .top-nav {
         flex-direction: column;
@@ -136,58 +155,61 @@
       .search-container {
         width: 100%;
       }
+
+      .container {
+        margin-top: 120px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
+  <!-- 实体顶部导航栏 -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
-    </div>       
-
+    </div>
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
-    
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
-      
       {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a> <!-- ✅ 已登录的人看到Logout -->
+        <a href="{% url 'logout' %}">Logout</a>
       {% else %}
-        <a href="{% url 'login' %}">Login</a> <!-- ✅ 没登录的人看到Login -->
+        <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
       {% endif %}
     </div>
   </div>
 
-  <!-- Trending Posts -->
-  <div class="content">
-    <h1>🔥 Trending Posts</h1>
+  <!-- 模块化导航栏 -->
+  {% include 'confession/navbar.html' %}
 
-    {% for confession in confessions %}
-      <a href="{% url 'full_post' confession.id %}" class="post-link">
-        <div class="post-box">
-          <h3>{{ confession.content|truncatechars:50 }}</h3>
-          <p>Posted by {{ confession.user }}</p>
-          <small>{{ confession.timestamp|timesince }} ago · 👍 {{ confession.upvotes }} Like</small>
+  <!-- 正文内容 -->
+  <div class="container">
+    <h2 style="font-size: 2.5rem; font-weight: bold;">🔥 Trending Confessions</h2>
+
+    {% for post in trending_posts %}
+      <a href="{% url 'full_post' post.id %}" style="text-decoration: none;">
+        <div class="post-card" style="cursor: pointer;">
+          <div style="text-align: left;">
+            <p>Confession #{{ forloop.counter }}</p>
+            <h3>{{ post.title }}</h3>
+          </div>
         </div>
       </a>
     {% empty %}
-      <p>No trending posts yet. Be the first to confess!</p>
+      <p>No trending posts found.</p>
     {% endfor %}
-    
   </div>
 
-  <footer>
-    <p>© 2025 MMU Strangers Gossip</p>
-  </footer>
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
 
 </body>
 </html>

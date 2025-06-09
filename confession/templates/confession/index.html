@@ -1,18 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Top Navigation */
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -34,10 +43,6 @@
       padding: 5px 10px;
     }
 
-    .logo a span {
-      color: inherit;
-    }
-
     .search-container {
       flex-grow: 1;
       margin: 0 10px;
@@ -49,6 +54,13 @@
       font-size: 1rem;
       border-radius: 5px;
       border: none;
+      background-color: white;
+      color: #000;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
     }
 
     .nav-links {
@@ -68,51 +80,93 @@
       text-decoration: underline;
     }
 
-    /* Page Content */
-    .content {
-      padding: 100px 20px 40px;
-      text-align: center;
+    .container {
+      max-width: 800px;
+      margin: 100px auto 60px;
+      padding: 0 20px;
     }
 
-    .content h1 {
+    .page-title {
       font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
-    /* Post Card */
     .post-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 15px;
-      margin: 20px auto;
-      max-width: 600px;
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.2s;
-      text-decoration: none;
-      color: black;
-      display: block;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
     }
 
     .post-card:hover {
-      transform: scale(1.02);
-      background-color: #f9f9f9;
+      background-color: #eaeaea;
     }
 
     .post-card h3 {
-      margin-top: 0;
+      font-size: 1.25rem;
+      margin: 6px 0 0;
+      color: #1c4c8a;
+    }
+
+    .post-card p {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1.1rem;
       color: #333;
     }
 
-    /* Footer */
+    .auth-prompt {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .auth-prompt a {
+      color: #377FC6;
+      text-decoration: none;
+    }
+
+    .auth-prompt a:hover {
+      text-decoration: underline;
+    }
+
+    body.dark-mode .post-card {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .post-card h3 {
+      color: #7c88ff;
+    }
+
+    body.dark-mode .post-card p {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .auth-prompt {
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .auth-prompt a {
+      color: #7c88ff;
+    }
+
     footer {
       background-color: #377FC6;
       color: white;
       padding: 10px;
       text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .top-nav {
         flex-direction: column;
@@ -137,55 +191,63 @@
       .search-container {
         width: 100%;
       }
+
+      .container {
+        margin-top: 120px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Top Navigation -->
+  <!-- 实体导航栏 -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
-    </div>          
-    
+    </div>    
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
-    
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
-      
       {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a> <!-- ✅ 已登录的人看到Logout -->
+        <a href="{% url 'logout' %}">Logout</a>
       {% else %}
-        <a href="{% url 'login' %}">Login</a> <!-- ✅ 没登录的人看到Login -->
+        <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
       {% endif %}
     </div>
   </div>
 
-  <div class="content">
-    <h1>Welcome to MMU Strangers Gossip</h1>
-    <p>Your go-to place for all the latest gossip around MMU!</p>
+  <!-- 模块化导航栏 -->
+  {% include 'confession/navbar.html' %}
 
-    <!-- Real Confessions -->
-    {% for confession in confessions %}
-      <a href="{% url 'full_post' confession.id %}" class="post-card">
-        <h3>{{ confession.content|truncatechars:50 }}</h3>
-        <p>Posted by {{ confession.user }} at {{ confession.timestamp|date:"Y-m-d H:i" }}</p>
+  <div class="container">
+    <h2 class="page-title">Welcome to MMU Strangers Gossip</h2>
+    <p>Confess, vent, and share your secrets anonymously with the MMU community.</p>
+
+    {% if not user.is_authenticated %}
+      <div class="auth-prompt">
+        <p>You're browsing as a guest. <a href="{% url 'login' %}?next={{ request.path }}">Login</a> or <a href="{% url 'register' %}?next={{ request.path }}">Register</a> to post.</p>
+      </div>
+    {% endif %}
+
+    {% for post in posts %}
+      <a href="{% url 'full_post' post.id %}" style="text-decoration: none;">
+        <div class="post-card">
+          <p>Confession #{{ forloop.counter }}</p>
+          <h3>{{ post.title }}</h3>
+        </div>
       </a>
     {% empty %}
-      <p>No posts yet. Be the first to confess!</p>
+      <p>No posts yet.</p>
     {% endfor %}
   </div>
 
-  <footer>
-    <p>© 2025 MMU Strangers Gossip</p>
-  </footer>
-
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
 </body>
 </html>
