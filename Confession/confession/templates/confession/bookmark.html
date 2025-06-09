@@ -1,0 +1,271 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saved Posts - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .container,
+    body.dark-mode .post.saved {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .post.saved h3 {
+      color: #7c88ff;
+    }
+
+    body.dark-mode .post.saved p,
+    body.dark-mode li {
+      color: #e0e0e0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      background-color: white;
+      color: #000;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 100px auto 40px;
+      padding: 0 20px;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #333;
+    }
+
+    .post.saved {
+      background-color: #e6f7ff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+
+    .post.saved:hover {
+      background-color: #d0eaff;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .post-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 6px 0 0;
+      color: #1c4c8a;
+    }
+
+    .post-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .post-title a:hover {
+      text-decoration: underline;
+    }
+
+    .post-body {
+      margin-top: 10px;
+      font-weight: normal;
+      color: #333;
+    }
+
+    .btn {
+      background-color: #377FC6;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #2e65a0;
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+
+      .container {
+        margin-top: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>
+
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="page-title" style="text-align:center;">Your Saved Posts</h2>
+
+    {% if saved_posts %}
+      <ul style="list-style:none; padding:0;">
+        {% for save in saved_posts %}
+          <li class="post-container" style="margin-bottom: 15px;">
+            <div class="post saved">
+              <div class="post-header">
+                <span>{% if save.post.user %}{{ save.post.user.username }}{% else %}Anonymous{% endif %}</span>
+                <span class="text-muted">Saved {{ save.saved_at|timesince }} ago</span>
+              </div>
+              <h3 class="post-title">
+                <a href="{% url 'full_post' save.post.id %}">
+                  {{ save.post.title }}
+                </a>
+              </h3>
+              <p class="post-body">"{{ save.post.content }}"</p>
+              <button type="button" class="btn unsave-btn" data-post-id="{{ save.post.id }}">Remove Bookmark</button>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p style="text-align:center;">You have no saved posts.</p>
+    {% endif %}
+  </div>
+
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.unsave-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const postId = this.dataset.postId;
+        const button = this;
+
+        fetch("{% url 'unsave_post' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "X-Requested-With": "XMLHttpRequest",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            button.closest('li').remove();
+            // Check if there are no saved posts left
+            if (document.querySelectorAll('li.post-container').length === 0) {
+              const container = document.querySelector('.container');
+              container.innerHTML = `<p style="text-align:center;">You have no saved posts.</p>`;
+            }
+          }
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

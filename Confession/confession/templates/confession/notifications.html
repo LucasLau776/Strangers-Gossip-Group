@@ -1,0 +1,330 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .container,
+    body.dark-mode .post-card {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .post-card h3 {
+      color: #7c88ff;
+    }
+
+    body.dark-mode .post-card p,
+    body.dark-mode li {
+      color: #e0e0e0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      background-color: white;
+      color: #000;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 100px auto 40px;
+      padding: 0 20px;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #333;
+    }
+
+    body.dark-mode .container {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .btn {
+      background-color: #377FC6;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #2e65a0;
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+
+      .container {
+        margin-top: 120px;
+      }
+    }
+    .badge {
+      background-color: #ff4757;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.8em;
+      margin-left: 5px;
+    }
+    
+    /* Notification list styling */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    
+    body:not(.dark-mode) li.unread {
+      font-weight: bold;
+      background-color: #f0f0f0;
+    }
+    
+    body.dark-mode li.unread {
+      font-weight: bold;
+      background-color: #2d2d2d;
+    }
+    
+    .notification-message a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    body:not(.dark-mode) .notification-message a:hover {
+      text-decoration: underline;
+      color: #377FC6;
+    }
+    
+    body.dark-mode .notification-message a:hover {
+      text-decoration: underline;
+      color: #7c88ff;
+    }
+    
+    .notification-message .moderator-action {
+      color: #ff4757;
+      font-weight: bold;
+    }
+    
+    body.dark-mode .notification-message .moderator-action {
+      color: #ff6b81;
+    }
+    
+    /* Dark mode text colors */
+    body.dark-mode .notification-message,
+    body.dark-mode .page-title {
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>
+
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="page-title" style="text-align:center;">Your Notifications{% if unread_count > 0 %}<span id="unread-count" class="badge">{{ unread_count }}</span>{% endif %}</h2>
+
+    {% if notifications %}
+      <ul>
+        {% for notification in notifications %}
+          <li class="{% if not notification.is_read %}unread{% endif %}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="notification-message">
+                {% if notification.notification_type == 'post_like' and notification.post %}
+                  <a href="{% url 'full_post' post_id=notification.post.id %}">
+                    👍 <strong>Someone liked your post</strong>: "{{ notification.post.title|truncatechars:30 }}"
+                  </a>
+                {% elif notification.notification_type == 'comment_like' and notification.comment %}
+                  <a href="{% url 'full_post' post_id=notification.comment.post.id %}#comment-{{ notification.comment.id }}">
+                    👍 <strong>Someone liked your comment</strong>: "{{ notification.comment.content|truncatechars:30 }}"
+                  </a>
+                {% elif notification.notification_type == 'reply_like' and notification.reply %}
+                  <a href="{% url 'full_post' post_id=notification.reply.comment.post.id %}#reply-{{ notification.reply.id }}">
+                    👍 <strong>Someone liked your reply</strong>
+                  </a>
+                {% elif notification.notification_type == 'new_comment' and notification.post %}
+                  <a href="{% url 'full_post' post_id=notification.post.id %}">
+                    💬 <strong>New comment on your post</strong>: "{{ notification.post.title|truncatechars:30 }}"
+                  </a>
+                {% elif notification.notification_type == 'new_reply' and notification.comment %}
+                  <a href="{% url 'full_post' post_id=notification.comment.post.id %}#comment-{{ notification.comment.id }}">
+                    ↪️ <strong>New reply on your comment</strong>
+                  </a>
+                {% elif notification.notification_type == 'deleted' %}
+                  <div>
+                    ❌ <strong>Moderator Action</strong>: {{ notification.message }}
+                  </div>
+                {% elif notification.notification_type == 'ban' %}
+                  <div>
+                    ⚠️ <strong>Account Banned. Login disabled</strong>: {{ notification.message }}
+                  </div>
+                {% elif notification.notification_type == 'warning' %}
+                  <div>
+                    ⚠️ <strong>Warning Received</strong>: {{ notification.message }}
+                  </div>
+                {% endif %}
+              </div>
+
+              {% if not notification.is_read %}
+                <form method="POST" action="{% url 'mark_as_read' notification.id %}" style="margin-left: 10px;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn">Mark as Read</button>
+                </form>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p style="text-align:center;">No notifications found.</p>
+    {% endif %}
+  </div>
+
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
+
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+  $(document).ready(function() {
+      $('.btn').click(function(event) {
+          event.preventDefault();
+          const form = $(this).closest('form');
+          const url = form.attr('action');
+      
+          $.post({
+              url: url,
+              headers: { "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() }
+          }).done(function(data) {
+              if (data.success) {
+                  form.closest('li').removeClass('unread');
+                  form.remove();
+                  updateUnreadCount();
+              }
+          });
+      });
+
+      function updateUnreadCount() {
+          let $badge = $('#unread-count');
+          let unreadCount = parseInt($badge.text()) - 1;
+          $badge.text(unreadCount);
+          if (unreadCount <= 0) $badge.hide();
+      }
+  });
+
+    $(document).ready(function() {
+      // Dark mode toggle
+      $('#dark-mode-toggle').click(function() {
+        $('body').toggleClass('dark-mode');
+      });
+    });
+  </script>
+</body>
+</html>

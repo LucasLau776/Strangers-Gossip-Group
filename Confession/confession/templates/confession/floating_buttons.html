@@ -1,0 +1,81 @@
+<style>
+  .floating-btn {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  #themeToggle {
+    bottom: 20px;
+    right: 20px;
+    background-color: #555;
+    color: white;
+  }
+  #bookmarkBtn {
+    bottom: 20px;
+    left: 20px;
+    background-color: #50eabc;
+    color: white;
+  }
+  #notifBtn {
+    bottom: 80px;
+    left: 20px;
+    background-color: #45f1f4;
+    color: white;
+  }
+  #profileBtn {
+    top: 70px;
+    left: 20px;
+    background-color: #7c88ff;
+    color: white;
+  }
+  #modBtn {
+    bottom: 140px;
+    right: 20px;
+    background-color: #ff5722;
+    color: white;
+  }
+</style>
+
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'get_notifications' %}'">🔔</button>
+<button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark_page' %}'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'profile' %}'">👤</button>
+
+{% if user.is_authenticated and user.userprofile.is_admin %}
+<button class="floating-btn" id="modBtn" onclick="location.href='{% url 'moderation_panel' %}'">🛡️</button>
+{% endif %}
+
+<script>
+  const themeBtn = document.getElementById('themeToggle');
+
+  window.onload = function() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeBtn.textContent = '☀️';
+    } else {
+      document.body.classList.remove('dark-mode');
+      themeBtn.textContent = '🌙';
+    }
+  };
+
+  themeBtn.addEventListener('click', () => {
+    const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.body.classList.toggle('dark-mode', newTheme === 'dark');
+
+    themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+
+    localStorage.setItem("theme", newTheme);
+  });
+</script>
