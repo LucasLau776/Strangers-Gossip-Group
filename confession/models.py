@@ -21,29 +21,20 @@ class Confession(models.Model):
 
     def __str__(self):
         return self.content[:20]
-    
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.CharField(
-        max_length=100,
-        default='avatar5.png',
-        blank=True
-    )
-    
+    avatar = models.CharField(max_length=100, default='avatar5.png', blank=True)
     last_avatar_change = models.DateTimeField(null=True, blank=True)
     last_password_change = models.DateTimeField(null=True, blank=True)
     is_admin = models.BooleanField(default=False)
-
     warning_count = models.IntegerField(default=0)
     is_banned = models.BooleanField(default=False)
     ban_reason = models.TextField(blank=True, null=True)
     ban_expiry = models.DateTimeField(blank=True, null=True)
-
     dismissed = models.BooleanField(default=False)
     dismissed_at = models.DateTimeField(null=True, blank=True)
-    dismissed_by = models.ForeignKey(User, null=True, blank=True, 
-    on_delete=models.SET_NULL,
-    related_name='dismissed_users')
+    dismissed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='dismissed_users')
 
     def add_warning(self, reason):
         self.warning_count += 1
@@ -62,7 +53,7 @@ class UserProfile(models.Model):
 
     @property
     def is_currently_banned(self):
-        if not self .is_banned:
+        if not self.is_banned:
             return False
         if self.ban_expiry and self.ban_expiry > timezone.now():
             return True
@@ -81,7 +72,7 @@ class AvatarChangeLog(models.Model):
 
     def __str__(self):
         return f"{self.profile.user} changed avatar at {self.changed_at}"
-    
+
 class PasswordChangeLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     changed_at = models.DateTimeField(auto_now_add=True)
@@ -102,10 +93,10 @@ class UserActivityLog(models.Model):
     new_value = models.CharField(max_length=255, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
-    
+
     class Meta:
         ordering = ['-timestamp']
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.activity_type} at {self.timestamp}"
 
@@ -131,15 +122,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def save(self, *args, **kwargs):
         is_new = self.pk is None
         super().save(*args, **kwargs)
-        
         if is_new:
             content_lower = self.content.lower()
             toxic_words_found = [word for word in settings.TOXIC_WORDS if word in content_lower]
-            
             if toxic_words_found:
                 Report.objects.create(
                     content_object=self,
@@ -179,11 +168,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
-    
+
     def save(self, *args, **kwargs):
         is_new = self.pk is None
         super().save(*args, **kwargs)
-        
         if is_new and any(word in self.content.lower() for word in settings.TOXIC_WORDS):
             Report.objects.create(
                 content_object=self,
@@ -210,7 +198,6 @@ class CommentLike(models.Model):
 class Reply(models.Model):
     comment = models.ForeignKey(Comment, related_name='replies', on_delete=models.CASCADE)
     parent_reply = models.ForeignKey('self', null=True, blank=True, related_name='child_replies', on_delete=models.CASCADE)
-
     content = models.TextField(blank=False)
     session_key = models.CharField(max_length=40)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
@@ -268,29 +255,13 @@ class Notification(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True)
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE, null=True, blank=True)
     reply = models.ForeignKey('Reply', on_delete=models.CASCADE, null=True, blank=True)
-    from_user = models.ForeignKey(
-        User,
-        related_name='sent_notifications',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    from_user = models.ForeignKey(User, related_name='sent_notifications', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user or self.session_key}: {self.message}"
 
     @classmethod
-    def create_notification(
-        cls,
-        recipient,
-        notification_type,
-        from_user=None,
-        session_key=None,
-        post=None,
-        comment=None,
-        reply=None,
-        message=None
-    ):
+    def create_notification(cls, recipient, notification_type, from_user=None, session_key=None, post=None, comment=None, reply=None, message=None):
         user = recipient if isinstance(recipient, User) else None
 
         if user is not None and from_user == user:
@@ -314,7 +285,6 @@ class Notification(models.Model):
         )
         notification.save()
         return notification
-
 
 class Save(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

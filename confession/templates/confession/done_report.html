@@ -7,16 +7,14 @@
   <title>Report Submitted</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <style>
-    /* General Body Styles */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #121212; /* Dark background */
+      background-color: #121212; /* Dark background default */
       color: #e0e0e0; /* Light text for dark mode */
     }
 
-    /* Top Navigation Bar */
     .top-nav {
       background-color: #377FC6;
       color: white;
@@ -31,44 +29,42 @@
     }
 
     body.dark-mode .top-nav {
-      background-color: #1a2e3b; /* Darker blue for top nav in dark mode */
+      background-color: #1a2e3b;
     }
 
-    /* Container (Main content area) */
     .container {
       padding: 150px 20px 100px 20px;
       max-width: 600px;
       margin: auto;
       text-align: center;
-      background-color: #2a2a2a; /* Dark background for the container */
-      border-radius: 10px; /* Slight rounding of corners */
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Soft shadow for contrast */
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     h2 {
-      color: #377FC6; /* Blue color for headings */
+      color: #377FC6;
       margin-bottom: 20px;
     }
 
     body.dark-mode h2 {
-      color: #7c88ff; /* Lighter blue for dark mode */
+      color: #7c88ff;
     }
 
     p {
       font-size: 1.1rem;
-      color: #e0e0e0; /* Light text for paragraphs */
+      color: #e0e0e0;
     }
 
     body.dark-mode p {
-      color: #f0f0f0; /* Slightly lighter text for dark mode */
+      color: #f0f0f0;
     }
 
-    /* Link/Button */
     a {
       display: inline-block;
       margin-top: 30px;
       text-decoration: none;
-      background-color: #377FC6; /* Blue background for links */
+      background-color: #377FC6;
       color: white;
       padding: 10px 25px;
       font-size: 1rem;
@@ -81,16 +77,15 @@
     }
 
     body.dark-mode a {
-      background-color: #7c88ff; /* Lighter blue for buttons in dark mode */
+      background-color: #7c88ff;
     }
 
     body.dark-mode a:hover {
-      background-color: #5a6ba2; /* Slightly darker blue on hover for dark mode */
+      background-color: #5a6ba2;
     }
 
-    /* Footer */
     footer {
-      background-color: #377FC6; /* Blue background for footer */
+      background-color: #377FC6;
       color: white;
       text-align: center;
       padding: 15px;
@@ -100,18 +95,18 @@
     }
 
     body.dark-mode footer {
-      background-color: #1a2e3b; /* Dark footer in dark mode */
+      background-color: #1a2e3b;
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
 
 <div class="top-nav">
   <h2>Report Submitted</h2>
 </div>
 
 <div class="container">
-  <h2> Thank you for your report!</h2>
+  <h2>Thank you for your report!</h2>
   <p>We’ve received your report and will take action if necessary.</p>
   <a href="{% url 'index' %}">Back to Home</a>
 </div>

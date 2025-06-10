@@ -1,10 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import PasswordChangeForm
-from .models import Post, Comment, UserProfile
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+from .models import Post, Comment, UserProfile
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -24,14 +24,6 @@ class CommentForm(forms.ModelForm):
         if not content:
             raise forms.ValidationError("Content cannot be empty")
         return content
-
-from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-
-from django.contrib.auth.forms import AuthenticationForm
-from django import forms
 
 class MMUAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
@@ -96,10 +88,8 @@ class MMURegisterForm(UserCreationForm):
                 'Only MMU institutional emails are allowed. '
                 'Please use your @student.mmu.edu.my or @mmu.edu.my email.'
             )
-            
         if User.objects.filter(email=email).exists():
             raise ValidationError('This email is already registered.')
-            
         return email
 
     def save(self, commit=True):

@@ -16,6 +16,7 @@
       color: #333;
       transition: background-color 0.3s, color 0.3s;
     }
+
     body.dark-mode {
       background-color: #121212;
       color: #f0f0f0;
@@ -162,7 +163,9 @@
     }
   </style>
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+  {% include 'confession/navbar.html' %}
 
   <!-- 实体顶部导航栏 -->
   <div class="top-nav">
@@ -186,9 +189,6 @@
       {% endif %}
     </div>
   </div>
-
-  <!-- 模块化导航栏 -->
-  {% include 'confession/navbar.html' %}
 
   <!-- 正文内容 -->
   <div class="container">

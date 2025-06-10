@@ -3,202 +3,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register - MMU Strangers Gossip</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode {
-      background-color: #121212;
-      color: #f0f0f0;
-    }
-
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      background-color: #377FC6;
-      padding: 10px 20px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 10;
-      box-sizing: border-box;
-      flex-wrap: wrap;
-    }
-    .logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 5px 10px;
-    }
-    .search-container {
-      flex-grow: 1;
-      margin: 0 10px;
-    }
-    .search-container input {
-      width: 100%;
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: none;
-      background-color: white;
-      color: #000;
-    }
-    body.dark-mode .search-container input {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 1rem;
-      padding: 5px 10px;
-    }
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
-
-    .register-form {
-      max-width: 400px;
-      margin: 120px auto 40px auto;
-      padding: 30px 25px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgb(37 123 197 / 0.15);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode .register-form {
-      background-color: #1e1e1e;
-      color: #f0f0f0;
-      box-shadow: 0 4px 15px rgb(60 160 255 / 0.3);
-    }
-    .register-form h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      font-weight: 700;
-    }
-    .register-form input {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      background-color: white;
-      color: #000;
-      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    }
-    body.dark-mode .register-form input {
-      background-color: #2c2c2c;
-      border-color: #444;
-      color: #f0f0f0;
-    }
-    .register-form input:focus {
-      outline: none;
-      border-color: #377FC6;
-      box-shadow: 0 0 8px #377FC6;
-    }
-    body.dark-mode .register-form input:focus {
-      background-color: #3a3a3a;
-      color: #f0f0f0;
-    }
-    .register-form button {
-      width: 100%;
-      background-color: #377FC6;
-      border: none;
-      border-radius: 6px;
-      padding: 12px;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .register-form button:hover {
-      background-color: #285a9e;
-    }
-
-    footer {
-      background-color: #377FC6;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-
-    .floating-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #555;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    @media (max-width: 768px) {
-      .top-nav {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-      }
-      .logo a {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-      }
-      .nav-links {
-        flex-direction: column;
-        margin-top: 10px;
-      }
-      .nav-links a {
-        margin: 5px 0;
-      }
-      .search-container {
-        width: 100%;
-        margin: 10px 0;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+  <!-- 顶部导航 -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
     </div>
+
     <form method="GET" action="{% url 'search' %}" class="search-container">
-      <input type="text" name="q" placeholder="Search..." required>
+      <input type="text" name="q" placeholder="Search..." required />
     </form>
+
     <div class="nav-links">
       <a href="{% url 'index' %}">Home</a>
       <a href="{% url 'trending' %}">Trending</a>
       <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated and user.userprofile.is_admin %}
+        <a href="{% url 'moderation_panel' %}">Mod Panel</a>
+      {% endif %}
       {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>
       {% else %}
@@ -208,58 +36,47 @@
     </div>
   </div>
 
-  <div class="register-form">
-    <h2>Register</h2>
-    {% if form.errors %}
-    <div style="color: #dc3545; margin-bottom: 15px;">
-      {% for field, errors in form.errors.items %}
-        {% for error in errors %}
-          <p>{{ error }}</p>
-        {% endfor %}
-      {% endfor %}
-    </div>
-    {% endif %}
-    
-    <form method="POST" action="{% url 'register' %}{% if next %}?next={{ next }}{% endif %}">
+  {% include "confession/navbar.html" %}
+
+  <div class="container mt-5 mb-5" style="max-width: 600px; margin-top: 140px !important;">
+    <h3 class="mb-4">Register</h3>
+    <form method="post" action="{% url 'register' %}" class="card p-4 shadow">
       {% csrf_token %}
-      <input type="hidden" name="next" value="{{ next }}">
-      <input type="text" name="username" placeholder="Username" required value="{{ form.username.value|default_if_none:'' }}">
-      <input type="email" name="email" placeholder="MMU Email" required value="{{ form.email.value|default_if_none:'' }}">
-      <input type="password" name="password1" placeholder="Password" required>
-      <input type="password" name="password2" placeholder="Confirm Password" required>
-      
-      <button type="submit">Sign Up</button>
+
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          <strong>Error:</strong> Please correct the highlighted fields.
+        </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Username</label>
+        {{ form.username }}
+      </div>
+
+      <div class="mb-3">
+        <label for="id_email" class="form-label">MMU Email</label>
+        {{ form.email }}
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password1" class="form-label">Password</label>
+        {{ form.password1 }}
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password2" class="form-label">Confirm Password</label>
+        {{ form.password2 }}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Register</button>
     </form>
 
-    <p style="text-align: center; margin-top: 15px;">
-      Have an account? <a href="{% url 'login' %}">Login</a>
-    </p>
+    <p class="mt-3 text-center text-muted">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
   </div>
-  
 
-  <button class="floating-btn" id="themeToggle">🌙</button>
+  {% include "confession/floating_buttons.html" %}
+  {% include "confession/footer.html" %}
 
-  {% include 'confession/footer.html' %}
-
-  <script>
-    // Check if dark mode is set in localStorage
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-    }
-
-    const toggleBtn = document.getElementById('themeToggle');
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      // Update localStorage when the theme is toggled
-      if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        toggleBtn.textContent = '☀️';
-      } else {
-        localStorage.setItem('theme', 'light');
-        toggleBtn.textContent = '🌙';
-      }
-    });
-  </script>
 </body>
 </html>

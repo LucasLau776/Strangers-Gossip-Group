@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notifications - MMU Strangers Gossip</title>
@@ -226,10 +227,18 @@
       {% endif %}
     </div>
   </div>
+=======
+  <meta charset="UTF-8">
+  <title>Notifications - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+>>>>>>> 6e0f4fa86d5e569091782b080d08b374a176441b
 
   {% include "confession/navbar.html" %}
 
   <div class="container">
+<<<<<<< HEAD
     <h2 class="page-title" style="text-align:center;">
       Your Notifications
       {% if unread_count > 0 %}
@@ -278,10 +287,23 @@
               </form>
               {% endif %}
             </div>
+=======
+    <h2 style="text-align:center;">Your Notifications</h2>
+    {% if notifications %}
+      <ul style="text-align:left; list-style: none; padding: 0;">
+        {% for notification in notifications %}
+          <li style="margin-bottom: 10px; {% if not notification.is_read %}font-weight: bold;{% endif %}">
+            {{ notification.message }}
+            <form method="POST" action="{% url 'mark_as_read' notification.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn">Mark as Read</button>
+            </form>
+>>>>>>> 6e0f4fa86d5e569091782b080d08b374a176441b
           </li>
         {% endfor %}
       </ul>
     {% else %}
+<<<<<<< HEAD
       <p style="text-align:center;">No notifications found.</p>
     {% endif %}
   </div>
@@ -318,3 +340,15 @@
   </script>
 </body>
 </html>
+=======
+      <p>No notifications found.</p>
+    {% endif %}
+  </div>
+
+  {% include "confession/floating_buttons.html" %}
+  {% include "confession/footer.html" %}
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+>>>>>>> 6e0f4fa86d5e569091782b080d08b374a176441b

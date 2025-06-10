@@ -127,7 +127,7 @@ class Migration(migrations.Migration):
             name='UserProfile',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('avatar', models.CharField(default='avatar5.png', max_length=100)),
+                ('avatar', models.ImageField(blank=True, null=True, upload_to='avatars/')),
                 ('last_avatar_change', models.DateTimeField(blank=True, null=True)),
                 ('last_password_change', models.DateTimeField(blank=True, null=True)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

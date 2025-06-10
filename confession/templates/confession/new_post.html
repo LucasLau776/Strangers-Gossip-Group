@@ -4,18 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MMU Strangers Gossip</title>
+  <title>New Post - MMU Strangers Gossip</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
-  <!-- 实体导航栏 -->
+
+  <!-- 实体导航 -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
         <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
       </a>
-    </div>    
+    </div>
     <form method="GET" action="{% url 'search' %}" class="search-container">
       <input type="text" name="q" placeholder="Search..." required>
     </form>
@@ -35,26 +35,36 @@
   <!-- 模块导航 -->
   {% include 'confession/navbar.html' %}
 
-  <div class="container" style="max-width: 800px; margin: 100px auto 60px; padding: 0 20px;">
-    <h2 class="page-title" style="font-size: 2rem; font-weight: bold;">Welcome to MMU Strangers Gossip</h2>
-    <p>Confess, vent, and share your secrets anonymously with the MMU community.</p>
+  <div class="container" style="margin: 100px auto 60px; max-width: 700px; padding: 0 20px;">
+    <h2 class="mb-3">Create a New Post</h2>
 
     {% if not user.is_authenticated %}
-      <div class="auth-prompt" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
-        <p>You're browsing as a guest. <a href="{% url 'login' %}?next={{ request.path }}">Login</a> or <a href="{% url 'register' %}?next={{ request.path }}">Register</a> to post.</p>
+      <div class="alert alert-warning text-center">
+        You must <a href="{% url 'login' %}?next={{ request.path }}">login</a> to post.
       </div>
-    {% endif %}
-
-    {% for post in posts %}
-      <a href="{% url 'full_post' post.id %}" style="text-decoration: none;">
-        <div class="post-card" style="background-color: #f5f5f5; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-          <p style="margin: 0; font-weight: bold; font-size: 1.1rem; color: #333;">Confession #{{ forloop.counter }}</p>
-          <h3 style="font-size: 1.25rem; margin: 6px 0 0; color: #1c4c8a;">{{ post.title }}</h3>
+    {% else %}
+      <form id="new-post-form" method="POST" action="{% url 'post_confession' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" name="title" id="title" class="form-control" required>
         </div>
-      </a>
-    {% empty %}
-      <p>No posts yet.</p>
-    {% endfor %}
+
+        <div class="mb-3">
+          <label for="content" class="form-label">Post Content</label>
+          <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload Image or GIF (optional)</label>
+          <input type="file" name="image" id="image" class="form-control" accept="image/*,image/gif">
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Submit Post</button>
+        </div>
+      </form>
+    {% endif %}
   </div>
 
   {% include 'confession/floating_buttons.html' %}

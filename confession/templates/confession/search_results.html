@@ -21,7 +21,6 @@
       color: #f0f0f0;
     }
 
-    /* Navbar styles */
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -40,7 +39,6 @@
       text-decoration: none;
       font-size: 1.5rem;
       font-weight: bold;
-      padding: 5px 10px;
     }
 
     .search-container {
@@ -80,7 +78,6 @@
       text-decoration: underline;
     }
 
-    /* Content styles */
     .content {
       max-width: 800px;
       margin: 100px auto 40px;
@@ -163,9 +160,11 @@
       color: white;
       padding: 10px;
       text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
 
-    /* Floating buttons styles */
     .floating-btn {
       position: fixed;
       width: 50px;
@@ -180,24 +179,28 @@
       transition: all 0.3s ease;
       border: none;
     }
+
     #themeToggle {
       bottom: 20px;
       right: 20px;
       background-color: #555;
       color: white;
     }
+
     #bookmarkBtn {
       bottom: 20px;
       left: 20px;
       background-color: #50eabc;
       color: white;
     }
+
     #notifBtn {
       bottom: 80px;
       left: 20px;
       background-color: #45f1f4;
       color: white;
     }
+
     #profileBtn {
       top: 70px;
       left: 20px;
@@ -236,7 +239,9 @@
     }
   </style>
 </head>
+
 <body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
   <!-- Navbar -->
   <div class="top-nav">
     <div class="logo">
@@ -323,9 +328,7 @@
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
       document.body.classList.toggle('dark-mode', newTheme === 'dark');
-
       themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-
       localStorage.setItem("theme", newTheme);
     });
   </script>

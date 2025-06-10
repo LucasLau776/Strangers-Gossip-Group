@@ -120,7 +120,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
 # Media files (uploaded images, GIFs)
@@ -135,7 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Store uploaded files here
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/profile/' #after login will come here
+LOGIN_REDIRECT_URL = '/profile/'  # after login will come here
 
 LOGGING = {
     'version': 1,
@@ -152,5 +151,6 @@ LOGGING = {
 }
 
 TOXIC_WORDS = [
-    'stupid', 'idiot', 'kill', 'die', 'suck', 'shut up', 'shutup', 'ass', 'asshole', 'niger', 'nigger', 'nigga'
+    'stupid', 'idiot', 'kill', 'die', 'suck', 'shut up', 'shutup',
+    'ass', 'asshole', 'niger', 'nigger', 'nigga'
 ]

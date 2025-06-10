@@ -6,188 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - MMU Strangers Gossip</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode {
-      background-color: #121212;
-      color: #f0f0f0;
-    }
-
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      background-color: #377FC6;
-      padding: 10px 20px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 10;
-      box-sizing: border-box;
-      flex-wrap: wrap;
-    }
-    .logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 5px 10px;
-    }
-    .search-container {
-      flex-grow: 1;
-      margin: 0 10px;
-    }
-    .search-container input {
-      width: 100%;
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: none;
-      background-color: white;
-      color: #000;
-    }
-    body.dark-mode .search-container input {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 1rem;
-      padding: 5px 10px;
-    }
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
-
-    .login-form-container {
-      max-width: 400px;
-      margin: 120px auto 40px auto;
-      padding: 30px 25px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgb(37 123 197 / 0.15);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode .login-form-container {
-      background-color: #1e1e1e;
-      color: #f0f0f0;
-      box-shadow: 0 4px 15px rgb(60 160 255 / 0.3);
-    }
-    .login-form-container h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      font-weight: 700;
-    }
-    .login-form-container input {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      background-color: white;
-      color: #000;
-      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    }
-    body.dark-mode .login-form-container input {
-      background-color: #2c2c2c;
-      border-color: #444;
-      color: #f0f0f0;
-    }
-    .login-form-container input:focus {
-      outline: none;
-      border-color: #377FC6;
-      box-shadow: 0 0 8px #377FC6;
-      background-color: white;
-      color: #000;
-    }
-    body.dark-mode .login-form-container input:focus {
-      background-color: #3a3a3a;
-      color: #f0f0f0;
-    }
-    .login-form-container button {
-      width: 100%;
-      background-color: #377FC6;
-      border: none;
-      border-radius: 6px;
-      padding: 12px;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .login-form-container button:hover {
-      background-color: #285a9e;
-    }
-
-    footer {
-      background-color: #377FC6;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-
-    .floating-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #555;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    @media (max-width: 768px) {
-      .top-nav {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-      }
-      .logo a {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-      }
-      .nav-links {
-        flex-direction: column;
-        margin-top: 10px;
-      }
-      .nav-links a {
-        margin: 5px 0;
-      }
-      .search-container {
-        width: 100%;
-        margin: 10px 0;
-      }
-    }
-  </style>
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
@@ -213,17 +33,14 @@
   <div class="login-form-container">
     <h2>Login</h2>
     <form method="POST" action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        
-        {{ form.username }}
-        {{ form.password }}
-        
-        <button type="submit" class="btn btn-primary">Log In</button>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {{ form.username }}
+      {{ form.password }}
+      <button type="submit" class="btn btn-primary">Log In</button>
     </form>
-    
     <p style="text-align: center; margin-top: 15px;">
-        Don't have an account? <a href="{% url 'register' %}?next={{ next }}" style="color: #377FC6;">Register here</a>
+      Don't have an account? <a href="{% url 'register' %}?next={{ next }}" style="color: #377FC6;">Register here</a>
     </p>
   </div>
 

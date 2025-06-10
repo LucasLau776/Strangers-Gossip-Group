@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <title>Report Comment - MMU Strangers Gossip</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -126,9 +125,8 @@
     }
   </style>
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
 
-  <!-- 实体 Top Nav -->
   <div class="top-nav">
     <div class="logo">
       <a href="{% url 'index' %}">
@@ -151,11 +149,12 @@
     </div>
   </div>
 
-  <!-- 模块化 navbar -->
   {% include "confession/navbar.html" %}
 
   <main>
     <h2 style="text-align:center;">Report Comment</h2>
+    <p><strong>Comment:</strong> {{ comment.content }}</p>
+
     <form method="post">
       {% csrf_token %}
       <div style="margin-bottom: 20px;">
@@ -169,6 +168,5 @@
   </main>
 
   {% include "confession/footer.html" %}
-
 </body>
 </html>

@@ -1,10 +1,9 @@
-/* ===== Base Styles ===== */
 body {
-  margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   color: #333;
+  margin: 0;
+  padding: 0;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -13,35 +12,30 @@ body.dark-mode {
   color: #f0f0f0;
 }
 
-/* ===== Consistent Navbar ===== */
 .top-nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   background-color: #377FC6;
-  padding: 10px 20px !important;
+  padding: 10px 20px;
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 1000;
+  z-index: 10;
   box-sizing: border-box;
-  height: 60px !important;
   flex-wrap: wrap;
 }
 
 .logo a {
-  font-size: 1.5rem;
-  font-weight: bold;
   color: white;
   text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
   padding: 5px 10px;
-  line-height: 1.2;
 }
 
 .search-container {
   flex-grow: 1;
-  margin: 0 15px;
-  max-width: 500px;
+  margin: 0 10px;
 }
 
 .search-container input {
@@ -51,23 +45,23 @@ body.dark-mode {
   border-radius: 5px;
   border: none;
   background-color: white;
-  color: black;
+  color: #000;
 }
 
 body.dark-mode .search-container input {
   background-color: #2c2c2c;
-  color: white;
+  color: #f0f0f0;
 }
 
 .nav-links {
   display: flex;
-  gap: 10px;
   align-items: center;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
+  margin: 0 10px;
   font-size: 1rem;
   padding: 5px 10px;
 }
@@ -76,253 +70,71 @@ body.dark-mode .search-container input {
   text-decoration: underline;
 }
 
-/* ===== Main Content ===== */
-.container {
-  max-width: 800px;
-  margin: 100px auto 40px;
-  padding: 20px;
-  background: white;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.container h1, .container h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.post.saved {
-  background-color: #e6f7ff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-body.dark-mode .post.saved {
-  background-color: #1e3a4a;
-}
-
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.post-title {
-  font-size: 1.2rem;
-  margin: 10px 0;
-}
-
-.welcome-section {
-  text-align: center;
-  margin-top: 120px;
-  margin-bottom: 40px;
-  padding: 0 20px;
-}
-
-.welcome-section h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #000;
-}
-
-.welcome-section p {
-  font-size: 1.2rem;
-  color: #666;
-  margin-top: 0;
-  margin-bottom: 30px;
-}
-
-.post-form-container {
-  max-width: 700px;
-  margin: 120px auto 60px;
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.post-form-container h2 {
-  text-align: left;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #222;
-}
-
-.post-form-container input[type="text"],
-.post-form-container textarea {
-  width: 100%;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-.post-form-container button {
-  background-color: #377FC6;
-  color: white;
-  padding: 10px 24px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.post-form-container button:hover {
-  background-color: #2f6dad;
-}
-
-/* ========== Post Card Design ========== */
-.post-card {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-  transition: transform 0.3s, background-color 0.3s;
-}
-.post-card:hover {
-  background-color: #f0f8ff;
-  transform: scale(1.02);
-}
-.post-card h2, .post-card h3 {
-  color: #1c4c8a;
-  margin: 0 0 10px;
-}
-.post-card p {
-  color: #444;
-}
-
-/* ========== Buttons ========== */
-button, .btn {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #377FC6;
-  color: white;
-  transition: background-color 0.2s ease;
-}
-button:hover, .btn:hover {
-  background-color: #2e6bb0;
-}
-
-/* ========== Footer ========== */
 footer {
   background-color: #377FC6;
   color: white;
   padding: 10px;
   text-align: center;
-  font-size: 0.9rem;
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
 }
 
-/* ========== Notification & Floating Buttons ========== */
-.icon-btn {
-  position: fixed;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 1.2rem;
+.card {
+  margin-top: 80px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .container,
+body.dark-mode .card,
+body.dark-mode .form-control,
+body.dark-mode .form-label,
+body.dark-mode .form-control:focus,
+body.dark-mode .form-check-input,
+body.dark-mode .form-select {
+  background-color: #1e1e1e !important;
+  color: #f0f0f0 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #aaa !important;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #377FC6 !important;
+  border-color: #377FC6 !important;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.notification-btn {
-  background-color: #00c3ff;
-  bottom: 90px;
+body.dark-mode .btn-primary:hover {
+  background-color: #2f6cab !important;
 }
 
-.bookmark-btn {
-  background-color: #52d179;
-  bottom: 30px;
+body.dark-mode .shadow {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) !important;
 }
 
-.theme-toggle {
-  background-color: #444;
-  bottom: 150px;
+body.dark-mode .text-dark {
+  color: #f0f0f0 !important;
 }
 
-/* ========== Misc ========== */
-textarea, input[type="text"], input[type="password"], input[type="email"] {
-  font-size: 1rem;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-  box-sizing: border-box;
+body.dark-mode .bg-light,
+body.dark-mode .bg-white,
+body.dark-mode .card-body,
+body.dark-mode .bg-body {
+  background-color: #121212 !important;
 }
 
-/* ========== 修正 LOGO 颜色 ========== */
-.mm {
-  color: #004AAD;
-  font-weight: bold;
-}
-.u {
-  color: red;
-  font-weight: bold;
-}
-
-/* ========== 修正浮动按钮位置在右下角 ========== */
-.icon-btn {
+.floating-buttons {
   position: fixed;
+  bottom: 80px;
   right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  color: white;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.theme-toggle {
-  bottom: 20px;
-  background-color: #444;
-}
-
-.notification-btn {
-  bottom: 90px;
-  background-color: #00c3ff;
-}
-
-.bookmark-btn {
-  bottom: 160px;
-  background-color: #52d179;
-}
-
-.profile-btn {
-  bottom: 230px;
-  background-color: #6a5acd;
-}
-
-.form-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  color: #222;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
 }
