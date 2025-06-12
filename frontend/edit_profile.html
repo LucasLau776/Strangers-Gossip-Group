@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile - MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .content {
+      padding: 100px 20px 40px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], textarea, select, input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    body.dark-mode input, body.dark-mode textarea, body.dark-mode select {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+      border: 1px solid #666;
+    }
+
+    .avatar-options img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.2s ease-in-out;
+    }
+
+    .avatar-options img.selected {
+      border-color: #377FC6;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #377FC6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #285fa6;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 50px;
+    }
+
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 999;
+      transition: 0.3s;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
+    .password-change input {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nav-links {
+        flex-direction: column;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <div class="logo"><a href="index.html">MMU Strangers Gossip</a></div>
+    <div class="search-container">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="trending.html">Trending</a>
+      <a href="post.html">Post</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>Edit Your Anonymous Profile</h2>
+    <form>
+      <div class="form-group">
+        <label for="username">Display Username:</label>
+        <input type="text" id="username" name="username" maxlength="20" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="user@example.com" disabled>
+      </div>
+
+      <div class="form-group">
+        <label>Change Password:</label>
+        <div class="password-change">
+          <input type="password" id="currentPassword" name="currentPassword" 
+                 placeholder="Current Password">
+          <input type="password" id="newPassword" name="newPassword" 
+                 placeholder="New Password">
+          <input type="password" id="confirmPassword" name="confirmPassword" 
+                 placeholder="Confirm New Password">
+        </div>
+        <small style="display: block; margin-top: 5px; color: #666;">
+          Leave blank to keep current password
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Select Avatar:</label>
+        <div class="avatar-options">
+          <img src="avatar1.png" alt="Avatar 1" onclick="selectAvatar(this)">
+          <img src="avatar2.png" alt="Avatar 2" onclick="selectAvatar(this)">
+          <img src="avatar3.png" alt="Avatar 3" onclick="selectAvatar(this)">
+          <img src="avatar4.png" alt="Avatar 4" onclick="selectAvatar(this)">
+          <img src="avatar5.png" alt="Avatar 5" onclick="selectAvatar(this)">
+          <img src="avatar6.png" alt="Avatar 6" onclick="selectAvatar(this)">
+          <img src="avatar7.png" alt="Avatar 7" onclick="selectAvatar(this)">
+          <img src="avatar8.png" alt="Avatar 8" onclick="selectAvatar(this)">
+          <img src="avatar9.png" alt="Avatar 9" onclick="selectAvatar(this)">
+          <img src="avatar10.png" alt="Avatar 10" onclick="selectAvatar(this)">
+          <img src="avatar11.png" alt="Avatar 11" onclick="selectAvatar(this)">
+          <img src="avatar12.png" alt="Avatar 12" onclick="selectAvatar(this)">
+          <img src="avatar13.png" alt="Avatar 13" onclick="selectAvatar(this)">
+          <img src="avatar14.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar15.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar16.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar17.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar18.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar19.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar20.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar21.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar22.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar23.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar24.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar25.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar26.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar27.png" alt="Avatar 14" onclick="selectAvatar(this)">
+          <img src="avatar28.png" alt="Avatar 14" onclick="selectAvatar(this)">
+        </div>
+        <input type="hidden" id="selectedAvatar" name="avatar">
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Bio (Max 15 words):</label>
+        <textarea id="bio" name="bio" rows="3" maxlength="150" placeholder="Write something about you..." oninput="limitWords(this, 15)"></textarea>
+        <small id="wordCount">0/15 words</small>
+      </div>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+
+  <button class="floating-btn" id="themeToggle">🌙</button>
+  <button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
+  <button class="floating-btn" id="bookmarkBtn" onclick="location.href='bookmark.html'">📑</button>
+  <button class="floating-btn" id="profileBtn" onclick="location.href='profile.html'">👤</button>
+
+  <footer>
+    <p>© 2025 MMU Strangers Gossip</p>
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+
+    function selectAvatar(img) {
+      document.querySelectorAll('.avatar-options img').forEach(i => i.classList.remove('selected'));
+      img.classList.add('selected');
+      document.getElementById('selectedAvatar').value = img.src;
+    }
+
+    function limitWords(textarea, limit) {
+      const words = textarea.value.trim().split(/\s+/);
+      if (words.length > limit) {
+        textarea.value = words.slice(0, limit).join(" ");
+      }
+      document.getElementById('wordCount').textContent = `${textarea.value.trim().split(/\s+/).length}/${limit} words`;
+    }
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (currentPassword || newPassword || confirmPassword) {
+        if (!currentPassword) {
+          alert('Please enter your current password');
+          e.preventDefault();
+          return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+          alert('New password and confirmation password do not match!');
+          e.preventDefault();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
