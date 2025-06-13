@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Report Comment - MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 100px 20px 60px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .report-form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .report-form {
+      background-color: #1e1e1e;
+    }
+
+    .report-form h2 {
+      margin-bottom: 15px;
+    }
+
+    .report-form textarea {
+      width: 98%;
+      height: 100px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .report-form textarea {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .report-form button {
+      margin-top: 10px;
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #bookmarkFloatBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+  <div class="logo">
+    <a href="index.html">MMU Strangers Gossip</a>
+  </div>
+  <div class="search-container">
+    <input type="text" placeholder="Search...">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="trending.html">Trending</a>
+    <a href="post.html">Post</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="report-form">
+    <h2>Report Comment</h2>
+    <p>Please explain why you are reporting this comment:</p>
+    <textarea placeholder="Describe the issue..."></textarea>
+    <br>
+    <button onclick="submitReport()">Submit Report</button>
+  </div>
+</div>
+
+<!-- Floating Buttons -->
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
+<button class="floating-btn" id="bookmarkFloatBtn" onclick="location.href='bookmark.html'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='profile.html'">👤</button>
+
+<footer>
+  <p>© 2025 MMU Strangers Gossip</p>
+</footer>
+
+<script>
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  });
+
+  function submitReport() {
+    alert("Your report has been submitted.");
+    window.location.href = "done_report.html";
+  }
+</script>
+
+</body>
+</html>
