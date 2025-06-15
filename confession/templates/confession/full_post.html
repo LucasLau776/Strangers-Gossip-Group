@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ post.title }} - MMU Strangers Gossip</title>
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% include 'confession/navbar.html' %}
+
+  <div class="container mt-5 pt-4">
+    <div class="card shadow p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">{{ post.title }}</h3>
+        {% if post.user.userprofile.avatar %}
+          <img src="{{ post.user.userprofile.avatar.url }}" alt="Avatar" style="width:40px; height:40px; border-radius:50%;">
+        {% endif %}
+      </div>
+      <p>{{ post.content }}</p>
+      {% if post.image %}
+        {% if post.is_gif %}
+          <img src="{{ post.image.url }}" alt="GIF" class="img-fluid mb-3"/>
+        {% else %}
+          <img src="{{ post.image.url }}" alt="Image" class="img-fluid mb-3"/>
+        {% endif %}
+      {% endif %}
+      <p class="text-muted">Posted {{ post.created_at|timesince }} ago</p>
+
+      <div class="d-flex gap-3">
+        <button class="btn btn-sm btn-outline-primary like-post-btn" data-post-id="{{ post.id }}">
+          👍 Like (<span class="post-likes-count">{{ post.likes_count }}</span>)
+        </button>
+        <button class="btn btn-sm btn-outline-success save-post-btn" data-post-id="{{ post.id }}">
+          💾 Save
+        </button>
+        <a href="{% url 'report_post' post.id %}" class="btn btn-sm btn-outline-danger">🚩 Report</a>
+        {% if post.session_key == request.session.session_key or post.user == user %}
+          <button class="btn btn-sm btn-outline-secondary delete-post-btn" data-post-id="{{ post.id }}">🗑️ Delete</button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="card shadow p-4">
+      <h5 class="mb-3">Comments</h5>
+
+      <form id="comment-form" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <textarea name="comment" id="comment-text" class="form-control" placeholder="Write your comment..." required></textarea>
+        </div>
+        <div class="mb-3">
+          <input type="file" name="comment_image" accept="image/*,image/gif" />
+        </div>
+        <button type="submit" class="btn btn-primary">Post Comment</button>
+      </form>
+
+      <div id="comments-list" class="mt-4">
+        {% for comment in comments %}
+          <div class="border p-3 mb-2 comment" data-comment-id="{{ comment.id }}">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong>{{ comment.user.username }}</strong>
+              <span class="text-muted">{{ comment.created_at|timesince }} ago</span>
+            </div>
+            <p>{{ comment.content }}</p>
+            {% if comment.image %}
+              <img src="{{ comment.image.url }}" class="img-fluid" alt="Comment Image"/>
+            {% endif %}
+            <div class="mt-2 d-flex gap-2">
+              <button class="btn btn-sm btn-outline-primary like-comment-btn" data-comment-id="{{ comment.id }}">
+                👍 Like (<span class="comment-likes-count">{{ comment.likes_count }}</span>)
+              </button>
+              <button class="btn btn-sm btn-outline-info reply-btn" data-comment-id="{{ comment.id }}">💬 Reply</button>
+              <a href="{% url 'report_comment' comment.id %}" class="btn btn-sm btn-outline-danger">🚩 Report</a>
+              {% if comment.session_key == request.session.session_key or comment.user == user %}
+                <button class="btn btn-sm btn-outline-secondary delete-comment-btn" data-comment-id="{{ comment.id }}">🗑️ Delete</button>
+              {% endif %}
+            </div>
+
+            <!-- Replies -->
+            {% for reply in comment.replies.all %}
+              <div class="border mt-2 p-2 ms-3 reply" data-reply-id="{{ reply.id }}">
+                <div class="d-flex justify-content-between align-items-center">
+                  <strong>{{ reply.user.username }}</strong>
+                  <span class="text-muted">{{ reply.created_at|timesince }} ago</span>
+                </div>
+                <p>{{ reply.content }}</p>
+                {% if reply.image %}
+                  <img src="{{ reply.image.url }}" class="img-fluid" alt="Reply Image"/>
+                {% endif %}
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary like-reply-btn" data-reply-id="{{ reply.id }}">
+                    👍 Like (<span class="reply-likes-count">{{ reply.likes_count }}</span>)
+                  </button>
+                  <button class="btn btn-sm btn-outline-info reply-to-reply-btn" data-reply-id="{{ reply.id }}">💬 Reply</button>
+                  <a href="{% url 'report_reply' reply.id %}" class="btn btn-sm btn-outline-danger">🚩 Report</a>
+                  {% if reply.session_key == request.session.session_key or reply.user == user %}
+                    <button class="btn btn-sm btn-outline-secondary delete-reply-btn" data-reply-id="{{ reply.id }}">🗑️ Delete</button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% empty %}
+          <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

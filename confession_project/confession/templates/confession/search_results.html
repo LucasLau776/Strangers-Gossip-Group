@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Results</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    /* Navbar styles */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      background-color: white;
+      color: #000;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Content styles */
+    .content {
+      max-width: 800px;
+      margin: 100px auto 40px;
+      padding: 0 20px;
+    }
+
+    body.dark-mode .content {
+      color: #f0f0f0;
+    }
+
+    .search-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .filter-form {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .filter-form select,
+    .filter-form button {
+      padding: 8px 12px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    body.dark-mode .filter-form select,
+    body.dark-mode .filter-form button {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+      border-color: #444;
+    }
+
+    .post-box {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    body.dark-mode .post-box {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    .post-box:hover {
+      transform: scale(1.02);
+    }
+
+    body.dark-mode .post-box:hover {
+      background-color: #2d2d2d;
+    }
+
+    .post-box h3 {
+      margin: 0;
+      color: #1c4c8a;
+    }
+
+    body.dark-mode .post-box h3 {
+      color: #7c88ff;
+    }
+
+    .post-meta {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    body.dark-mode .post-meta {
+      color: #b0b0b0;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Floating buttons styles */
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+
+      .content {
+        margin-top: 150px;
+      }
+    }
+  </style>
+</head>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+  <!-- Navbar -->
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>    
+    
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+    
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="search-title">
+      Search results for "{{ query }}"
+    </div>
+
+    <form method="get" action="{% url 'search' %}" class="filter-form">
+      <input type="hidden" name="q" value="{{ query }}">
+      <select name="filter">
+        <option value="date" {% if filter_type == "date" %}selected{% endif %}>Sort by Date</option>
+        <option value="popularity" {% if filter_type == "popularity" %}selected{% endif %}>Sort by Popularity</option>
+        <option value="year" {% if filter_type == "year" %}selected{% endif %}>Filter by This Year</option>
+      </select>
+      <button type="submit">Apply Filter</button>
+    </form>
+
+    {% for post in results %}
+    <a href="{% url 'full_post' post.id %}" style="text-decoration: none;">
+      <div class="post-box">
+        <h3>{{ post.title }}</h3>
+        <div class="post-meta">
+          👍 {{ post.likes_count }} · {{ post.created_at|date:"Y-m-d H:i" }}
+        </div>
+      </div>
+    </a>
+    {% empty %}
+      <p>No results found.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Floating Buttons -->
+  {% if user.is_authenticated %}
+    <button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'get_notifications' %}'">🔔</button>
+    <button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark_page' %}'">📑</button>
+    <button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'profile' %}'">👤</button>
+  {% endif %}
+  <button class="floating-btn" id="themeToggle">🌙</button>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MMU Strangers Gossip</p>
+  </footer>
+
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+
+    window.onload = function() {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeBtn.textContent = '☀️';
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeBtn.textContent = '🌙';
+      }
+    };
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      document.body.classList.toggle('dark-mode', newTheme === 'dark');
+
+      themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+
+      localStorage.setItem("theme", newTheme);
+    });
+  </script>
+</body>
+</html>

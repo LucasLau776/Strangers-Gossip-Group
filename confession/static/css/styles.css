@@ -1,0 +1,140 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #377FC6;
+  padding: 10px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.search-container {
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: white;
+  color: #000;
+}
+
+body.dark-mode .search-container input {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1rem;
+  padding: 5px 10px;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #377FC6;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.card {
+  margin-top: 80px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .container,
+body.dark-mode .card,
+body.dark-mode .form-control,
+body.dark-mode .form-label,
+body.dark-mode .form-control:focus,
+body.dark-mode .form-check-input,
+body.dark-mode .form-select {
+  background-color: #1e1e1e !important;
+  color: #f0f0f0 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #aaa !important;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #377FC6 !important;
+  border-color: #377FC6 !important;
+  color: white;
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: #2f6cab !important;
+}
+
+body.dark-mode .shadow {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .text-dark {
+  color: #f0f0f0 !important;
+}
+
+body.dark-mode .bg-light,
+body.dark-mode .bg-white,
+body.dark-mode .card-body,
+body.dark-mode .bg-body {
+  background-color: #121212 !important;
+}
+
+.floating-buttons {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}

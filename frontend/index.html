@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  {% include 'confession/navbar.html' %}
+  
+  <div class="content">
+    <h1>Welcome to MMU Strangers Gossip</h1>
+    <p>Confess, vent, and share your secrets anonymously with the MMU community.</p>
+
+    {% for post in posts %}
+      <a href="{% url 'full_post' post.id %}" style="text-decoration: none;">
+        <div class="post-card">
+          <div style="text-align: left;">
+            <p style="margin: 0; font-weight: bold; font-size: 1.2rem; color: #222;">
+              Confession #{{ forloop.counter }}
+            </p>
+            <h3 style="color: #1c4c8a; font-size: 1.3rem; margin: 6px 0 0;">{{ post.title }}</h3>
+          </div>
+        </div>
+      </a>
+    {% empty %}
+      <p>No posts yet.</p>
+    {% endfor %}
+  </div>
+  
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
+</body>
+</html>

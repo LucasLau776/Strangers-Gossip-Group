@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Post - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    .form-title-outside {
+      width: 700px;
+      margin: 100px auto 0 auto;
+      padding-left: 30px;
+      padding-right: 30px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+      text-align: left;
+    }
+
+    /* 让 container 回到原来偏低的位置 */
+    .post-form-container {
+      margin-top: 20px !important;
+    }
+  </style>
+</head>
+<body>
+  {% include 'confession/navbar.html' %}
+
+  <h1 class="form-title-outside">Create a New Post</h1>
+
+  <div class="post-form-container">
+    <form method="POST" action="{% url 'submit_post' %}">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="content" rows="6" placeholder="Time to gossip! Share something..." required></textarea>
+      <button type="submit">Submit Post</button>
+    </form>
+  </div>
+
+  {% include 'confession/floating_buttons.html' %}
+  {% include 'confession/footer.html' %}
+</body>

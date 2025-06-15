@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post - MMU Strangers Gossip</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 100px 20px 60px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .post-content, .comments-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .post-content, body.dark-mode .comments-section {
+      background-color: #1e1e1e;
+    }
+
+    .action-btns button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .like-btn, .save-btn {
+      background-color: #377FC6;
+      color: white;
+    }
+
+    .report-btn {
+      background-color: crimson;
+      color: white;
+    }
+
+    .comment {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+
+    .comment small {
+      color: #888;
+    }
+
+    .comment-actions {
+      margin-top: 5px;
+    }
+
+    .comment-actions button {
+      margin-right: 8px;
+      background-color: #e0e0e0;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    body.dark-mode .comment-actions button {
+      background-color: #555;
+      color: white;
+    }
+
+    .reply-input {
+      margin-top: 10px;
+    }
+
+    .reply-input textarea {
+      width: 98%;
+      height: 60px;
+      padding: 6px;
+      border-radius: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .reply-input textarea {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .reply-input button {
+      margin-top: 5px;
+      background-color: #377FC6;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .reply-input.hidden {
+      display: none;
+    }
+
+    .new-comment textarea {
+      width: 98%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background-color: white;
+      color: black;
+    }
+
+    body.dark-mode .new-comment textarea {
+      background-color: #333;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    .new-comment button {
+      margin-top: 8px;
+      background-color: #377FC6;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #bookmarkFloatBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+        #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
+    footer {
+      background-color: #377FC6;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div class="top-nav">
+  <div class="logo">
+    <a href="index.html">MMU Strangers Gossip</a>
+  </div>
+  <div class="search-container">
+    <input type="text" placeholder="Search...">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="trending.html">Trending</a>
+    <a href="post.html">Post</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="post-content">
+    <h2>Who’s that FOM guy walking with the mystery girl?</h2>
+    <p>Saw them holding hands near HB3 last night 👀 anyone knows who she is?</p>
+    <small>Posted 3 hours ago</small>
+    <div class="action-btns">
+      <button class="like-btn" id="likeBtn"><i class="fas fa-thumbs-up"></i> Like (<span id="likeCount">56</span>)</button>
+      <button class="save-btn" id="savePostBtn"><i class="fas fa-bookmark"></i> Save</button>
+      <button class="report-btn" onclick="location.href='report.html'"><i class="fas fa-flag"></i> Report</button>
+    </div>
+  </div>
+
+  <div class="comments-section">
+    <h3>Comments</h3>
+    <div class="comment">
+      <p><strong>Anonymous:</strong> I saw them too! They looked really cute 😍</p>
+      <div class="comment-actions">
+        <button onclick="likeComment(this)" data-liked="false">👍 Like (<span>0</span>)</button>
+        <button onclick="toggleReply(this)">Reply</button>
+        <button onclick="location.href='report_comment.html'">Report</button>
+      </div>
+      <div class="reply-input hidden">
+        <textarea placeholder="Write your reply..."></textarea>
+        <button onclick="postReply(this)">Post Reply</button>
+      </div>
+    </div>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #ccc;">
+    <div class="new-comment">
+      <h4>Leave a Comment</h4>
+      <textarea id="newCommentText" rows="3" placeholder="Write your comment here..."></textarea>
+      <br>
+      <button onclick="addComment()">Post Comment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Buttons -->
+<button class="floating-btn" id="themeToggle">🌙</button>
+<button class="floating-btn" id="notifBtn" onclick="location.href='notification.html'">🔔</button>
+<button class="floating-btn" id="bookmarkFloatBtn" onclick="location.href='bookmark.html'">📑</button>
+<button class="floating-btn" id="profileBtn" onclick="location.href='profile.html'">👤</button>
+
+<footer>
+  <p>© 2025 MMU Strangers Gossip</p>
+</footer>
+
+<script>
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  });
+
+  const likeBtn = document.getElementById("likeBtn");
+  const likeCount = document.getElementById("likeCount");
+  let liked = localStorage.getItem("liked-post") === "true";
+  if (liked) likeBtn.innerHTML = `👎 Unlike (<span id="likeCount">${likeCount.textContent}</span>)`;
+  likeBtn.addEventListener("click", () => {
+    let count = parseInt(likeCount.textContent);
+    liked = !liked;
+    localStorage.setItem("liked-post", liked);
+    likeCount.textContent = liked ? count + 1 : count - 1;
+    likeBtn.innerHTML = liked
+      ? `👎 Unlike (<span id="likeCount">${likeCount.textContent}</span>)`
+      : `👍 Like (<span id="likeCount">${likeCount.textContent}</span>)`;
+  });
+
+  const saveBtn = document.getElementById("savePostBtn");
+  let saved = localStorage.getItem("saved-post") === "true";
+  saveBtn.innerHTML = saved ? "📌 Unsave" : "📌 Save";
+  saveBtn.addEventListener("click", () => {
+    saved = !saved;
+    localStorage.setItem("saved-post", saved.toString());
+    saveBtn.innerHTML = saved ? "📌 Unsave" : "📌 Save";
+  });
+
+  function toggleReply(btn) {
+    const replyBox = btn.closest(".comment").querySelector(".reply-input");
+    replyBox.classList.toggle("hidden");
+  }
+
+  function postReply(btn) {
+    const text = btn.previousElementSibling.value;
+    if (text.trim()) {
+      alert("Reply posted: " + text);
+      btn.previousElementSibling.value = "";
+      btn.closest(".reply-input").classList.add("hidden");
+    }
+  }
+
+  function addComment() {
+    const textarea = document.getElementById("newCommentText");
+    if (textarea.value.trim()) {
+      alert("Comment added: " + textarea.value);
+      textarea.value = "";
+    }
+  }
+
+  function likeComment(button) {
+    const span = button.querySelector("span");
+    let count = parseInt(span.textContent);
+    if (button.dataset.liked === "true") {
+      span.textContent = count - 1;
+      button.dataset.liked = "false";
+      button.innerHTML = `👍 Like (<span>${span.textContent}</span>)`;
+    } else {
+      span.textContent = count + 1;
+      button.dataset.liked = "true";
+      button.innerHTML = `✅ Liked (<span>${span.textContent}</span>)`;
+    }
+  }
+</script>
+
+</body>
+</html>

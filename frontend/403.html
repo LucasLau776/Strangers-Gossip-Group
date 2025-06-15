@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>403 - Forbidden</title>
+    <style>
+        body { 
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            color: #e0e0e0; 
+            text-align: center; 
+            padding: 50px 20px;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 8rem;
+            margin: 0;
+            color: #FFA726;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        p {
+            font-size: 1.5rem;
+            margin: 1rem 0 2rem;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #FFA726;
+            color: #1a1a1a !important;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .button:hover {
+            background-color: transparent;
+            border-color: #FFA726;
+            color: #FFA726 !important;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>403</h1>
+        <p>You don't have permission to access this resource.<br>Please check your credentials and try again.</p>
+        <a href="/" class="button">Return to Safety</a>
+    </div>
+</body>
+</html>
