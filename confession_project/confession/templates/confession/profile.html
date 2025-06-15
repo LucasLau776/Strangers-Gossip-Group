@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile - MMU Strangers Gossip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: #377FC6;
+      padding: 10px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      background-color: white;
+      color: #000;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #333;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Main Content */
+    .content {
+      padding: 100px 20px 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    /* Profile Card */
+    .profile-card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode .profile-card {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: white;
+      margin: 0 auto 20px;
+    }
+
+    .username {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+
+    .email {
+      color: gray;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode .email {
+      color: #aaa;
+    }
+
+    .profile-actions a {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .edit-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .logout-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #377FC6;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Floating Buttons */
+    .floating-btn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    #themeToggle {
+      bottom: 20px;
+      right: 20px;
+      background-color: #555;
+      color: white;
+    }
+
+    #bookmarkBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: #50eabc;
+      color: white;
+    }
+
+    #notifBtn {
+      bottom: 80px;
+      left: 20px;
+      background-color: #45f1f4;
+      color: white;
+    }
+
+    #profileBtn {
+      top: 70px;
+      left: 20px;
+      background-color: #7c88ff;
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .logo a {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <span style="color:#005BAC;">M</span><span style="color:#005BAC;">M</span><span style="color:#ED1C24;">U</span> Strangers Gossip
+      </a>
+    </div>
+
+    <!-- Search Bar -->
+    <form method="GET" action="{% url 'search' %}" class="search-container">
+      <input type="text" name="q" placeholder="Search..." required>
+    </form>
+
+    <div class="nav-links">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'trending' %}">Trending</a>
+      <a href="{% url 'post_confession' %}">Post</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="profile-card">
+      <div class="avatar">
+        {% if user.userprofile.avatar %}
+          {% load static %}
+          <img src="{% static 'avatars/'|add:user.userprofile.avatar %}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        {% else %}
+          {{ user.username|slice:":1"|upper }}
+        {% endif %}
+      </div>
+      <div class="username">{{ user.username }}</div>
+      <div class="email">{{ user.email }}</div>
+      <div class="profile-actions">
+        <a href="{% url 'edit_profile' %}" class="edit-btn">Edit Profile</a>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Buttons -->
+  <button class="floating-btn" id="themeToggle" title="Toggle Dark Mode">🌙</button>
+  <button class="floating-btn" id="notifBtn" onclick="location.href='{% url 'notifications' %}'" title="Notifications">🔔</button>
+  <button class="floating-btn" id="bookmarkBtn" onclick="location.href='{% url 'bookmark' %}'" title="Bookmarks">📑</button>
+  <button class="floating-btn" id="profileBtn" onclick="location.href='{% url 'profile' %}'" title="Profile">👤</button>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MMU Strangers Gossip. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+
+    window.onload = function() {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeBtn.textContent = '☀️';
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeBtn.textContent = '🌙';
+      }
+    };
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      document.body.classList.toggle('dark-mode', newTheme === 'dark');
+
+      themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+
+      localStorage.setItem("theme", newTheme);
+    });
+  </script>
+</body>
+</html>

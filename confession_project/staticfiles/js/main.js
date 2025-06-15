@@ -143,6 +143,12 @@ $(document).on("click", ".mark-read-btn", function (e) {
 
 // ========================== Reply-to-Reply ==========================
 
+// 展开/隐藏 回复表单（点击 reply 按钮）
+$(document).on("click", ".reply-btn", function () {
+  const commentId = $(this).data("comment-id");
+  $("#reply-form-" + commentId).toggle();
+});
+
 // 切换显示嵌套回复表单
 function toggleReplyForm(commentId, parentReplyId = null) {
   const form = document.getElementById(`reply-form-${commentId}`);
@@ -161,7 +167,7 @@ function toggleReplyForm(commentId, parentReplyId = null) {
   }
 }
 
-// ✅ 提交 reply 表单
+// 提交 reply 表单
 function submitReply(event, commentId) {
   event.preventDefault();
   const form = event.target;
@@ -246,9 +252,3 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-
-// 展开/隐藏 回复表单（点击 reply 按钮）
-$(document).on("click", ".reply-btn", function () {
-  const commentId = $(this).data("comment-id");
-  $("#reply-form-" + commentId).toggle();
-});
